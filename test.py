@@ -1,0 +1,389 @@
+import streamlit as st
+import streamlit.components.v1 as components
+
+# Your full HTML content as a string (paste your whole HTML here)
+html_code = """
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Decision Tree Sketch</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+        padding: 2em;
+      }
+      h2 {
+        font-size: 1.5em;
+      }
+      .options {
+        display: flex;
+        margin-top: 1em;
+        flex-direction: column;
+        gap: 0.5em;
+      }
+      button {
+        margin: 0.5em;
+        padding: 0.5em 1.2em;
+        font-size: 1em;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .back-button {
+        margin-top: 1em;
+        background-color: #6c757d;
+      }
+      .back-button:hover {
+        background-color: #5a6268;
+      }
+    </style>
+  </head>
+  <body>
+    <h2 id="question">Loading...</h2>
+    <div class="options" id="options"></div>
+
+    <script>
+      const historyStack = [];
+      let branchLocked = false;
+      let notificationsEnabled = {
+        weather: false,
+        crop: false,
+      };
+      const cropPrices = {
+        //Change when possible to get real prices
+        crop_1: 215.25,
+        crop_2: 187.5,
+      };
+      function updateStep(renderFunc) {
+        historyStack.push(renderFunc);
+        renderFunc();
+      }
+
+      function goBack() {
+        if (historyStack.length > 1) {
+          historyStack.pop();
+          const previous = historyStack[historyStack.length - 1];
+          previous(); // re-render last state
+        }
+      }
+
+      function renderWithBack(questionText, buttonsHTML, showBack = true) {
+        document.getElementById("question").innerHTML = questionText;
+        document.getElementById("options").innerHTML =
+          buttonsHTML +
+          (showBack
+            ? `<br><button class="back-button" onclick="goBack()"> Back to previous step </button>`
+            : "");
+      }
+
+      // --- Screens ---
+      function renderWelcome() {
+        renderWithBack(
+          "Welcome, what would you like to know?",
+          `
+          <button onclick="updateStep(Weather_info_1)">Weather information</button>
+          <button onclick="updateStep(crop_advice_1)">Crop Advice</button>
+          <button onclick="updateStep(Price_info_1)">Price information for crops</button>
+          <button onclick="updateStep(GAP_1)">Good Agricultural Practices</button>
+          <button onclick="updateStep(Notifications_1)">Notifications</button>
+      `,
+          false // No back button on first screen
+        );
+      }
+      //Weather information
+      function Weather_info_1() {
+        branchLocked = true;
+        renderWithBack(
+          "This is the current weather {Insert uploaded graph}",
+          `
+        <p> This is the current weather in the Mekong Delta</p>
+        
+        <img src="https://www.nahss.nl/wp-content/uploads/2023/05/NAHSS-logo-text-without-background-600x236.png" alt="Example image" style="max-width:40%; height:auto;"> 
+        
+        <button onclick="updateStep(() => Weather_forecasts_1())">Go to forecasts</button>
+        <button onclick="updateStep(() => weather_crop_advice_1())">Get weather advice for crops</button>
+      `
+        );
+      }
+      function weather_crop_advice_1() {
+        branchLocked = true;
+        renderWithBack(
+          "For what crop do you need weather advice?",
+          `
+        <button onclick="updateStep(() => weather_crop_advice_3('crop_1'))">crop 1</button>
+        <button onclick="updateStep(() => weather_crop_advice_3('crop_2'))">crop 2</button>
+      `
+        );
+      }
+
+      function Weather_forecasts_1() {
+        branchLocked = true;
+        renderWithBack(
+          "This is the weather forecast {Insert uploaded graph}",
+          `
+            <button onclick="updateStep(() =>weather_forecasts_2('period_1'))">Get forecast for period {1}</button>
+            <button onclick="updateStep(() =>weather_forecasts_2('period_2'))">Get forecast for period {2} </button>
+        `
+        );
+      }
+      function weather_forecasts_2(period) {
+        branchLocked = true;
+
+        let message = "";
+        let options = "";
+
+        if (period === "period_1") {
+          message = `
+            <p>This is the the forecast for period {2} </p>
+            <p> TEST </p>
+            <img src="https://www.nahss.nl/wp-content/uploads/2023/05/NAHSS-logo-text-without-background-600x236.png" alt="Example image" style="max-width:40%; height:auto;"> 
+            `;
+          options = `
+
+            `;
+        } else if (period === "period_2") {
+          message = `
+            <p>This is the the forecast for period {1} </p>
+            <p> TEST </p>
+            <img src="https://www.nahss.nl/wp-content/uploads/2023/05/NAHSS-logo-text-without-background-600x236.png" alt="Example image" style="max-width:40%; height:auto;"> 
+            `;
+          options = `
+
+            `;
+        }
+
+        renderWithBack(message, options);
+      }
+      //Crop Advice
+      function crop_advice_1() {
+        branchLocked = true;
+        renderWithBack(
+          "For what crop do you need advice?",
+          `
+        <button onclick="updateStep(() => crop_advice_2('cultivation'))">Cultivation</button>
+        <button onclick="updateStep(() => crop_advice_2('pest_and_diseases'))">Pest and diseases</button>
+      `
+        );
+      }
+      function crop_advice_2(type) {
+        branchLocked = true;
+
+        let message = "";
+        let options = "";
+
+        if (type === "pest_and_diseases") {
+          message =
+            "What type of crop do you need advice for pest and disease management?";
+          options = `
+            <button onclick="updateStep(() => pnd_1('crop_1'))">crop_1</button>
+            <button onclick="updateStep(() => pnd_1('crop_2'))">crop_2</button>
+            `;
+        } else {
+          message = "For what crop do you need advice?";
+          options = `
+            <button onclick="updateStep(() => crop_cultivation_adv('crop_1'))">crop_1</button>
+            <button onclick="updateStep(() => crop_cultivation_adv('crop_2'))">crop_2</button>
+            `;
+        }
+
+        renderWithBack(message, options);
+      }
+      // Price info
+      function Price_info_1() {
+        branchLocked = true;
+        renderWithBack(
+          "What crop do you want to know the historical prices of?",
+          `
+            <button onclick="updateStep(() => price_info_2('crop_1'))">crop_1 - $${cropPrices.crop_1.toFixed(
+              2
+            )} </button>
+            <button onclick="updateStep(() => price_info_2('crop_2'))">crop_2 - $${cropPrices.crop_2.toFixed(
+              2
+            )}</button>
+        `
+        );
+      }
+      function price_info_2(crop) {
+        branchLocked = true;
+
+        let message = "";
+        let options = "";
+
+        if (crop === "crop_1") {
+          message = `
+                <p>Here is the historical price data for crop 1:</p>
+                Insert table
+                `;
+          options = `
+                
+                `;
+        } else if (crop === "crop_2") {
+          message = `
+                <p>Here is the historical price data for crop 2:</p>
+                Insert table
+                `;
+          options = `
+                
+                `;
+        }
+
+        renderWithBack(message, options);
+      }
+      // Good Agricultural Practices
+      function GAP_1() {
+        branchLocked = true;
+        renderWithBack(
+          "What type of Good Agricultural Practices do you want to know about?",
+          `
+                <button onclick="updateStep(() => GAP_2('Conservation_agriculture'))">Conservation Agriculture</button>
+                <button onclick="updateStep(() => GAP_2('three_principles'))">3 principles of conservation agriculture</button>
+                <button onclick="updateStep(() => GAP_2('SBS_guide'))">Step by Step guide</button>
+            `
+        );
+      }
+      function GAP_2(type) {
+        branchLocked = true;
+
+        let message = "";
+        let options = "";
+
+        if (type === "Conservation_agriculture") {
+          message = `
+                <p>Conservation Agriculture is a sustainable farming practice that improves soil health and productivity.</p>
+                
+                `;
+          options = `
+                
+                `;
+        } else if (type === "three_principles") {
+          message = `
+                <p>The three principles of conservation agriculture are:</p>
+                <ul>
+                    <li>Minimal soil disturbance</li>
+                    <li>Permanent soil cover</li>
+                    <li>Diversity in crop rotations</li>
+                </ul>
+                `;
+          options = `
+                
+                `;
+        } else if (type === "SBS_guide") {
+          message = `
+                <p>Step by Step guide to implementing Good Agricultural Practices:</p>
+                <ol>
+                    <li>Assess your current practices</li>
+                    <li>Plan improvements</li>
+                    <li>Implement changes gradually</li>
+                    <li>Monitor and adjust as needed</li>
+                </ol>
+                `;
+          options = `
+                
+                `;
+        }
+
+        renderWithBack(message, options);
+      }
+      //Notifications
+      function Notifications_1() {
+        branchLocked = true;
+
+        // Define the button label based on current state
+        const buttonLabel = notificationsEnabled.weather
+          ? "Deactivate Weather Alerts"
+          : "Activate Weather Alerts";
+
+        renderWithBack(
+          "What type of notifications would you like to receive?",
+          `
+            <button onclick="updateStep(() => Activate_weather_alerts())">${buttonLabel}</button>
+            <button onclick="updateStep(() => Notifications_2('crop_cultivation'))">Crop Cultivation</button>
+            <button onclick="updateStep(() => Notifications_2('price_updates'))">Price Updates</button>
+            <button class="back-button" onclick="location.reload()">To begin</button>
+            `,
+          false
+        );
+      }
+      function Notifications_2(type) {
+        branchLocked = true;
+
+        let message = "";
+        let options = "";
+
+        if (type === "weather_alerts") {
+          notificationsEnabled.weather = true;
+          message = `
+                    <p>You will receive weather alerts for severe conditions.</p>
+                    <p>Weather alerts: ${
+                      notificationsEnabled.weather ? "✅ Active" : "❌ Inactive"
+                    }</p>
+                `;
+          options = `
+                    <>button onclick="updateStep(() => Activate_weather_alerts())">Activate Weather Alerts</button>
+                `;
+        } else if (type === "crop_cultivation") {
+          message = `
+                    <p>Toggle notifications for crops </p>
+                    
+                `;
+          options = `
+                    <button onclick="updateStep(() => Activate_crop_alerts('crop_1'))"> For crop {1} </button>
+                    <button onclick="updateStep(() => Activate_crop_alerts('crop_2'))"> For crop {2} </button>
+                `;
+        } else if (type === "price_updates") {
+          message = `
+                    What crop price updates would you like to receive?
+                `;
+          options = `
+                    <button onclick="updateStep(() => Activate_price_alerts('crop_1'))"> About crop {1} </button>
+                    <button onclick="updateStep(() => Activate_price_alerts('crop_2'))"> About crop {2} </button>
+                `;
+        }
+
+        renderWithBack(message, options);
+      }
+
+      function Activate_weather_alerts() {
+        branchLocked = true;
+
+        // Toggle the value
+        notificationsEnabled.weather = !notificationsEnabled.weather;
+
+        // Set message and button label based on new state
+        const message = notificationsEnabled.weather
+          ? "<p> Weather alerts activated. You will now receive notifications for severe weather conditions.</p>"
+          : "<p> Weather alerts deactivated. You will no longer receive weather notifications.</p>";
+
+        const buttonLabel = notificationsEnabled.weather
+          ? "Deactivate Weather Alerts"
+          : "Activate Weather Alerts";
+
+        renderWithBack(
+          message,
+          `<button onclick="updateStep(() => Activate_weather_alerts())">${buttonLabel}</button>` +
+            `<button onclick="updateStep(() => Notifications_1())">Back to notifications </button>` +
+            `<button class="back-button" onclick="location.reload()">To begin</button>`,
+          false
+        );
+      }
+      window.onload = function () {
+        updateStep(renderWelcome);
+      };
+    </script>
+  </body>
+</html>
+
+"""
+
+st.title("Decision Tree test")
+
+# Render your HTML + JS in Streamlit using components.html
+components.html(html_code, height=700, scrolling=True)

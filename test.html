@@ -86,12 +86,12 @@
         renderWithBack(
           "Welcome, what would you like to know?",
           `
-          <button onclick="updateStep(Version_1)">Version </button> 
           <button onclick="updateStep(Weather_info_1(version))">Weather information</button>
           <button onclick="updateStep(crop_advice_1)">Crop Advice</button>
           <button onclick="updateStep(Price_info_1)">Price information for crops</button>
           <button onclick="updateStep(GAP_1)">Good Agricultural Practices</button>
           <button onclick="updateStep(Notifications_1)">Notifications</button>
+          <button onclick="updateStep(Version_1)">Version </button> 
       `,
           false // No back button on first screen
         );
@@ -103,10 +103,10 @@
           "Select the Version You Want, the current version is the " +
             version_show,
           `
-            <button onclick="updateStep(extensionOfficerVersion)">Version for Extension Officers</button>
-            <button onclick="updateStep(dataSavingVersion)">Version for Data Saving</button>
-            <button onclick="updateStep(performanceOptimizedVersion)">Version for Performance Optimised</button>
-            <button onclick="updateStep(() => renderWelcome())">Go back to main menu</button>
+          <button onclick="updateStep(dataSavingVersion)">Version for Data Saving</button>
+          <button onclick="updateStep(performanceOptimizedVersion)">Version for Performance Optimised</button>
+          <button onclick="updateStep(extensionOfficerVersion)">Version for Extension Officers</button>
+          <button onclick="updateStep(() => renderWelcome())">Go back to main menu</button>
             `,
           false
         );

@@ -100,11 +100,11 @@
       function Version_1() {
         branchLocked = true;
         renderWithBack(
-          "Select the Version You Want, the current version is the " +
+          "Select the version you want, the current version is the " +
             version_show,
           `
-          <button onclick="updateStep(dataSavingVersion)">Version for Data Saving</button>
-          <button onclick="updateStep(performanceOptimizedVersion)">Version for Performance Optimised</button>
+          <button onclick="updateStep(dataSavingVersion)">Data Saving</button>
+          <button onclick="updateStep(performanceOptimizedVersion)">Performance Optimised</button>
           <button onclick="updateStep(extensionOfficerVersion)">Version for Extension Officers</button>
           <button onclick="updateStep(() => renderWelcome())">Go back to main menu</button>
             `,

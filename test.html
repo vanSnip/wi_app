@@ -52,6 +52,8 @@
         weather: false,
         crop: false,
       };
+      let version = "data_saving"; // Default version
+      let version_show = "Data Saving Version"; // Default version display
       const cropPrices = {
         //Change when possible to get real prices
         crop_1: 215.25,
@@ -84,7 +86,8 @@
         renderWithBack(
           "Welcome, what would you like to know?",
           `
-          <button onclick="updateStep(Weather_info_1)">Weather information</button>
+          <button onclick="updateStep(Version_1)">Version </button> 
+          <button onclick="updateStep(Weather_info_1(version))">Weather information</button>
           <button onclick="updateStep(crop_advice_1)">Crop Advice</button>
           <button onclick="updateStep(Price_info_1)">Price information for crops</button>
           <button onclick="updateStep(GAP_1)">Good Agricultural Practices</button>
@@ -93,21 +96,89 @@
           false // No back button on first screen
         );
       }
-      //Weather information
-      function Weather_info_1() {
+      //Versions and changing
+      function Version_1() {
         branchLocked = true;
         renderWithBack(
-          "This is the current weather {Insert uploaded graph}",
+          "Select the Version You Want, the current version is the " +
+            version_show,
           `
-        <p> This is the current weather in the Mekong Delta</p>
-        
-        <img src="https://www.nahss.nl/wp-content/uploads/2023/05/NAHSS-logo-text-without-background-600x236.png" alt="Example image" style="max-width:40%; height:auto;"> 
-        
-        <button onclick="updateStep(() => Weather_forecasts_1())">Go to forecasts</button>
-        <button onclick="updateStep(() => weather_crop_advice_1())">Get weather advice for crops</button>
-      `
+            <button onclick="updateStep(extensionOfficerVersion)">Version for Extension Officers</button>
+            <button onclick="updateStep(dataSavingVersion)">Version for Data Saving</button>
+            <button onclick="updateStep(performanceOptimizedVersion)">Version for Performance Optimised</button>
+            <button onclick="updateStep(() => renderWelcome())">Go back to main menu</button>
+            `,
+          false
         );
       }
+      function extensionOfficerVersion() {
+        version = "extension";
+        version_show = "Extension Officers Version";
+        renderWithBack(
+          "Extension Officers Version",
+          `
+            <p>This version includes tools and insights for agricultural extension services.</p>
+            <button onclick="updateStep(() => renderWelcome())">Go back to main menu</button>
+            `,
+          false
+        );
+      }
+
+      function dataSavingVersion() {
+        version = "data_saving";
+        version_show = "Data Saving Version";
+        renderWithBack(
+          "Data Saving Version",
+          `
+                <p>This version is optimized for low data usage.</p>
+                <button onclick="updateStep(() => renderWelcome())">Go back to main menu</button>
+                `,
+          false
+        );
+      }
+
+      function performanceOptimizedVersion() {
+        version = "performance";
+        version_show = "Performance Optimised Version";
+        renderWithBack(
+          "Performance Optimised Version",
+          `
+            <p>This version prioritizes speed and performance for low-end devices.</p>
+            <button onclick="updateStep(() => renderWelcome())">Go back to main menu</button>
+            `,
+          false
+        );
+      }
+      //Weather information
+      function Weather_info_1(version) {
+        branchLocked = true;
+
+        let imageHTML = "";
+        if (version === "performance") {
+          imageHTML = `
+      <img src="https://example.com/performance-graph.png" alt="Performance Graph" style="max-width:60%; height:auto;">
+    `;
+        } else if (version === "extension") {
+          imageHTML = `
+      <img src="https://example.com/extension-graph.png" alt="Extension Graph" style="max-width:60%; height:auto;">
+    `;
+        } else {
+          imageHTML = `
+      <p>Weather information is not available in this version to save data.</p>
+    `;
+        }
+
+        renderWithBack(
+          "Weather Information",
+          `
+      <p>This is the current weather in the Mekong Delta.</p>
+      ${imageHTML}
+      <button onclick="updateStep(() => Weather_forecasts_1())">Go to forecasts</button> 
+      <button onclick="updateStep(() => weather_crop_advice_1())">Get weather advice for crops</button>
+    `
+        );
+      }
+      //Change the crop advice and plots for the versions
       function weather_crop_advice_1() {
         branchLocked = true;
         renderWithBack(
@@ -215,7 +286,7 @@
         if (crop === "crop_1") {
           message = `
                 <p>Here is the historical price data for crop 1:</p>
-                Insert table
+                {Insert table} and it is sold at {insert location}
                 `;
           options = `
                 
@@ -223,7 +294,7 @@
         } else if (crop === "crop_2") {
           message = `
                 <p>Here is the historical price data for crop 2:</p>
-                Insert table
+                {Insert table} and it is sold at {insert location}
                 `;
           options = `
                 
@@ -372,6 +443,11 @@
       window.onload = function () {
         updateStep(renderWelcome);
       };
+      // Versions
+      //market and locations
+      //Two platforms
+      //personalisation
+      // Push to github when finished
     </script>
   </body>
 </html>

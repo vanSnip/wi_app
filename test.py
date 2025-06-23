@@ -106,9 +106,9 @@ def weather_info(_=None):
     st.header("Weather Information")
     version = st.session_state.version
     if version == "performance":
-        st.image("https://example.com/performance-graph.png", use_column_width=True)
+        st.image("https://github.com/vanSnip/wi_app/blob/main/graphs/Nahss%20log.png", use_column_width=True)
     elif version == "extension":
-        st.image("https://example.com/extension-graph.png", use_column_width=True)
+        st.image("https://github.com/vanSnip/wi_app/blob/main/graphs/Nahss%20log.png", use_column_width=True)
     else:
         st.write("Weather graphics are not available in this version to save data.")
 

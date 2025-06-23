@@ -224,7 +224,7 @@ def notifications_1(_=None):
     st.header("What type of notifications would you like to receive?")
 
     weather_state = st.session_state.notificationsEnabled["weather"]
-    weather_label = f"{'Enabled ' if weather_state else 'Disabled '} {'Deactivate' if weather_state else 'Activate'} Weather Alerts"
+    weather_label = f"Weather Alerts ({'Enabled ' if weather_state else 'Disabled '} {'Deactivate' if weather_state else 'Activate'})"
     st.button(weather_label, key="notif_weather", on_click=partial(toggle_notification, "weather"))
 
     st.button("Crop Cultivation", on_click=partial(navigate, "notifications_2", "crop_cultivation"))
@@ -243,14 +243,14 @@ def notifications_2(type_):
         crops = ["crop_1", "crop_2"]
         for crop in crops:
             state = st.session_state.notificationsEnabled[crop]
-            label = f"{'Enabled' if state else 'Disabled'} {'Deactivate' if state else 'Activate'} for {crop.replace('_', ' ').title()}"
+            label = f"{crop.replace('_', ' ').title()} ({'Enabled' if state else 'Disabled'} {'Deactivate' if state else 'Activate'})"
             st.button(label, key=f"notif_{crop}", on_click=partial(toggle_notification, crop))
     elif type_ == "price_updates":
         st.header("What crop price updates would you like to receive?")
         prices = ["price_1", "price_2"]
         for price in prices:
             state = st.session_state.notificationsEnabled[price]
-            label = f"{'Enabled' if state else 'Disabled'} {'Deactivate' if state else 'Activate'} price updates for Crop {price[-1]}"
+            label = f"{price.replace('_', ' ').title()} ({'Enabled' if state else 'Disabled'} {'Deactivate' if state else 'Activate'})"
             st.button(label, key=f"notif_{price}", on_click=partial(toggle_notification, price))
     back_button()
 

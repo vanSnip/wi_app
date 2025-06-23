@@ -26,16 +26,21 @@ if "version" not in st.session_state:
     st.session_state.version = "data_saving"
 if "notifications" not in st.session_state:
     st.session_state.notifications = {"weather": False, "crop": False}
+# Params for pages needing arguments
+if "forecast_period" not in st.session_state:
+    st.session_state.forecast_period = None
+if "selected_crop" not in st.session_state:
+    st.session_state.selected_crop = None
 
 # --- Navigation Functions ---
 def push_page(page_func):
     st.session_state.page_stack.append(page_func)
-    st.rerun()
+    st.experimental_rerun()
 
 def go_back():
     if len(st.session_state.page_stack) > 1:
         st.session_state.page_stack.pop()
-        st.rerun()
+        st.experimental_rerun()
 
 # --- Page Rendering ---
 def render_page():
@@ -81,23 +86,42 @@ def weather_forecast():
     st.subheader("Weather Forecast")
     col1, col2 = st.columns(2)
     with col1:
-        st.button("Forecast for Period 1", on_click=lambda: push_page(lambda: forecast_detail("Period 1")))
+        st.button("Forecast for Period 1", on_click=lambda: set_forecast_period("Period 1"))
     with col2:
-        st.button("Forecast for Period 2", on_click=lambda: push_page(lambda: forecast_detail("Period 2")))
+        st.button("Forecast for Period 2", on_click=lambda: set_forecast_period("Period 2"))
 
-def forecast_detail(period):
+def set_forecast_period(period):
+    st.session_state.forecast_period = period
+    push_page(forecast_detail)
+
+def forecast_detail():
+    period = st.session_state.get("forecast_period", "Unknown Period")
     st.write(f"This is the forecast for {period}.")
     st.image("https://www.nahss.nl/wp-content/uploads/2023/05/NAHSS-logo-text-without-background-600x236.png")
 
 def weather_crop_advice():
     st.subheader("Weather Advice by Crop")
-    st.button("Crop 1", on_click=lambda: push_page(lambda: st.write("Weather advice for Crop 1")))
-    st.button("Crop 2", on_click=lambda: push_page(lambda: st.write("Weather advice for Crop 2")))
+    st.button("Crop 1", on_click=lambda: set_selected_crop("Crop 1"))
+    st.button("Crop 2", on_click=lambda: set_selected_crop("Crop 2"))
+
+def set_selected_crop(crop):
+    st.session_state.selected_crop = crop
+    push_page(weather_crop_advice_detail)
+
+def weather_crop_advice_detail():
+    crop = st.session_state.get("selected_crop", "Unknown Crop")
+    st.write(f"Weather advice for {crop}")
 
 def crop_advice():
     st.subheader("Crop Advice")
-    st.button("Cultivation", on_click=lambda: push_page(lambda: st.write("Cultivation advice coming soon.")))
-    st.button("Pest and Diseases", on_click=lambda: push_page(lambda: st.write("Pest control info coming soon.")))
+    st.button("Cultivation", on_click=lambda: push_page(cultivation_advice))
+    st.button("Pest and Diseases", on_click=lambda: push_page(pest_advice))
+
+def cultivation_advice():
+    st.write("Cultivation advice coming soon.")
+
+def pest_advice():
+    st.write("Pest control info coming soon.")
 
 def price_info():
     st.subheader("Crop Prices")
@@ -106,20 +130,29 @@ def price_info():
 
 def gap():
     st.subheader("Good Agricultural Practices")
-    st.button("Conservation Agriculture", on_click=lambda: push_page(lambda: st.markdown("""
+    st.button("Conservation Agriculture", on_click=lambda: push_page(conservation_agriculture))
+    st.button("Three Principles", on_click=lambda: push_page(three_principles))
+    st.button("Step-by-Step Guide", on_click=lambda: push_page(step_by_step_guide))
+
+def conservation_agriculture():
+    st.markdown("""
         Conservation Agriculture improves soil health and productivity.
-    """)))
-    st.button("Three Principles", on_click=lambda: push_page(lambda: st.markdown("""
+    """)
+
+def three_principles():
+    st.markdown("""
         - Minimal soil disturbance  
         - Permanent soil cover  
         - Crop rotation  
-    """)))
-    st.button("Step-by-Step Guide", on_click=lambda: push_page(lambda: st.markdown("""
+    """)
+
+def step_by_step_guide():
+    st.markdown("""
         1. Assess  
         2. Plan  
         3. Implement  
         4. Monitor  
-    """)))
+    """)
 
 def notifications():
     st.subheader("Notifications")

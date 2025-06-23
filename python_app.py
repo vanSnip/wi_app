@@ -31,12 +31,12 @@ def render_page(func):
 def welcome():
     st.title("Welcome")
     st.write("What would you like to know?")
-    st.button("🌦 Weather Information", on_click=lambda: go_to(weather_info))
-    st.button("🌾 Crop Advice", on_click=lambda: go_to(crop_advice))
-    st.button("💲 Price Information", on_click=lambda: go_to(price_info))
-    st.button("🌱 Good Agricultural Practices", on_click=lambda: go_to(gap))
-    st.button("🔔 Notifications", on_click=lambda: go_to(notifications))
-    st.button("⚙️ Choose Version", on_click=lambda: go_to(choose_version))
+    st.button("Weather Information", on_click=lambda: go_to(weather_info))
+    st.button("Crop Advice", on_click=lambda: go_to(crop_advice))
+    st.button("Price Information", on_click=lambda: go_to(price_info))
+    st.button("Good Agricultural Practices", on_click=lambda: go_to(gap))
+    st.button("Notifications", on_click=lambda: go_to(notifications))
+    st.button("Choose Version _test", on_click=lambda: go_to(choose_version))
 
 def choose_version():
     st.header("Select the Version")

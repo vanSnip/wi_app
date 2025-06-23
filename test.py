@@ -26,16 +26,25 @@ if "version" not in st.session_state:
     st.session_state.version = "data_saving"
 if "notifications" not in st.session_state:
     st.session_state.notifications = {"weather": False, "crop": False}
+if "page_stack" not in st.session_state:
+    st.session_state.page_stack = []
+
+if "current_page" not in st.session_state:
+    st.session_state.current_page = welcome
+
+def render_page():
+    st.session_state.current_page()
+    if len(st.session_state.page_stack) > 1:
+        st.button("Back", on_click=go_back)
 
 # Navigation Functions
 def go_to(page_func):
-    st.session_state.page_stack.append(page_func)
-    st.rerun()
+    st.session_state.current_page = page_func
 
 def go_back():
     if len(st.session_state.page_stack) > 1:
         st.session_state.page_stack.pop()
-        st.rerun()
+        st.session_state.current_page = st.session_state.page_stack[-1]
 
 def render_page(func):
     func()

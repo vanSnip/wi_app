@@ -309,10 +309,3 @@ def notifications_1():
     if len(st.session_state.page_stack) > 1:
         st.button("⬅️ Back to previous step", on_click=go_back, key="back_button")
 
-def notifications_2(type_):
-    st.session_state.branch_locked = True
-    if type_ == "weather_alerts":
-        st.session_state.notifications_enabled["weather"] = True
-        message = f"""
-        You will receive weather alerts for severe conditions.<br>
-        Weather alerts: {"Active" if st

@@ -12,7 +12,9 @@ st.markdown(
         padding: 0.5em 1.2em;
         font-size: 1em;
         margin: 0.5em 0;
-        width: auto;
+        width: 100% !important;
+        display: block;
+        box-sizing: border-box;
       }
       .stButton > button:hover {
         background-color: #0056b3;
@@ -20,7 +22,9 @@ st.markdown(
       .back-button > button {
         background-color: #6c757d !important;
         margin-top: 1em;
-        width: auto;
+        width: 100% !important;
+        display: block;
+        box-sizing: border-box;
       }
       .back-button > button:hover {
         background-color: #5a6268 !important;

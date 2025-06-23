@@ -45,7 +45,13 @@ if "history" not in st.session_state:
     st.session_state.history = [("welcome", None)]
 
 if "notificationsEnabled" not in st.session_state:
-    st.session_state.notificationsEnabled = {"weather": False, "crop": False}
+    st.session_state.notificationsEnabled = {
+        "weather": False,
+        "crop_1": False,
+        "crop_2": False,
+        "price_1": False,
+        "price_2": False,
+    }
 
 if "version" not in st.session_state:
     st.session_state.version = "data_saving"
@@ -57,6 +63,10 @@ cropPrices = {
     "crop_1": 215.25,
     "crop_2": 187.5,
 }
+
+def toggle_notification(key):
+    st.session_state.notificationsEnabled[key] = not st.session_state.notificationsEnabled[key]
+
 
 # --- Navigation helpers ---
 def navigate(screen_name, param=None):
@@ -213,10 +223,13 @@ def GAP_2(type_):
 def notifications_1(_=None):
     st.header("What type of notifications would you like to receive?")
 
-    weather_label = "Deactivate Weather Alerts" if st.session_state.notificationsEnabled["weather"] else "Activate Weather Alerts"
-    st.button(weather_label, on_click=toggle_weather_alerts)
+    weather_state = st.session_state.notificationsEnabled["weather"]
+    weather_label = "Deactivate Weather Alerts" if weather_state else "Activate Weather Alerts"
+    st.button(weather_label, key="notif_weather", on_click=partial(toggle_notification, "weather"))
+
     st.button("Crop Cultivation", on_click=partial(navigate, "notifications_2", "crop_cultivation"))
     st.button("Price Updates", on_click=partial(navigate, "notifications_2", "price_updates"))
+
     if st.button("To begin"):
         reset()
     back_button()
@@ -227,12 +240,18 @@ def toggle_weather_alerts():
 def notifications_2(type_):
     if type_ == "crop_cultivation":
         st.header("Toggle notifications for crops")
-        st.button("For crop 1", on_click=partial(toggle_crop_alerts, "crop_1"))
-        st.button("For crop 2", on_click=partial(toggle_crop_alerts, "crop_2"))
+        crops = ["crop_1", "crop_2"]
+        for crop in crops:
+            state = st.session_state.notificationsEnabled[crop]
+            label = f"{'Deactivate' if state else 'Activate'} notifications for {crop.replace('_', ' ').title()}"
+            st.button(label, key=f"notif_{crop}", on_click=partial(toggle_notification, crop))
     elif type_ == "price_updates":
         st.header("What crop price updates would you like to receive?")
-        st.button("About crop 1", on_click=partial(toggle_price_alerts, "crop_1"))
-        st.button("About crop 2", on_click=partial(toggle_price_alerts, "crop_2"))
+        prices = ["price_1", "price_2"]
+        for price in prices:
+            state = st.session_state.notificationsEnabled[price]
+            label = f"{'Deactivate' if state else 'Activate'} price updates for Crop {price[-1]}"
+            st.button(label, key=f"notif_{price}", on_click=partial(toggle_notification, price))
     back_button()
 
 def toggle_crop_alerts(crop):

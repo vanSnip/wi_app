@@ -1,6 +1,6 @@
 import streamlit as st
 
-# Inject global CSS for button styling
+# Inject global CSS for consistent button styling
 st.markdown("""
     <style>
     div.stButton > button {
@@ -19,26 +19,20 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Session State Initialization
+# --- Session State Initialization ---
 if "page_stack" not in st.session_state:
     st.session_state.page_stack = []
+if "current_page" not in st.session_state:
+    st.session_state.current_page = None
 if "version" not in st.session_state:
     st.session_state.version = "data_saving"
 if "notifications" not in st.session_state:
     st.session_state.notifications = {"weather": False, "crop": False}
-if "page_stack" not in st.session_state:
-    st.session_state.page_stack = []
 
-#if "current_page" not in st.session_state:
-#    st.session_state.current_page = welcome
 
-def render_page():
-    st.session_state.current_page()
-    if len(st.session_state.page_stack) > 1:
-        st.button("Back", on_click=go_back)
-
-# Navigation Functions
-def go_to(page_func):
+# --- Navigation Functions ---
+def push_page(page_func):
+    st.session_state.page_stack.append(page_func)
     st.session_state.current_page = page_func
 
 def go_back():
@@ -46,21 +40,22 @@ def go_back():
         st.session_state.page_stack.pop()
         st.session_state.current_page = st.session_state.page_stack[-1]
 
-def render_page(func):
-    func()
+# --- Render Page Wrapper ---
+def render_current_page():
+    st.session_state.current_page()
     if len(st.session_state.page_stack) > 1:
         st.button("Back", on_click=go_back)
 
-# Pages
+# --- Pages ---
 def welcome():
     st.title("Welcome")
     st.write("What would you like to know?")
-    st.button("Weather Information", on_click=lambda: go_to(weather_info))
-    st.button("Crop Advice", on_click=lambda: go_to(crop_advice))
-    st.button("Price Information", on_click=lambda: go_to(price_info))
-    st.button("Good Agricultural Practices", on_click=lambda: go_to(gap))
-    st.button("Notifications", on_click=lambda: go_to(notifications))
-    st.button("Choose Version", on_click=lambda: go_to(choose_version))
+    st.button("Weather Information", on_click=lambda: push_page(weather_info))
+    st.button("Crop Advice", on_click=lambda: push_page(crop_advice))
+    st.button("Price Information", on_click=lambda: push_page(price_info))
+    st.button("Good Agricultural Practices", on_click=lambda: push_page(gap))
+    st.button("Notifications", on_click=lambda: push_page(notifications))
+    st.button("Choose Version", on_click=lambda: push_page(choose_version))
 
 def choose_version():
     st.header("Select the Version")
@@ -84,16 +79,16 @@ def weather_info():
     elif st.session_state.version == "extension":
         st.image("https://example.com/extension-graph.png")
 
-    st.button("Forecasts", on_click=lambda: go_to(weather_forecast))
-    st.button("Crop Weather Advice", on_click=lambda: go_to(weather_crop_advice))
+    st.button("Forecasts", on_click=lambda: push_page(weather_forecast))
+    st.button("Crop Weather Advice", on_click=lambda: push_page(weather_crop_advice))
 
 def weather_forecast():
     st.subheader("Weather Forecast")
     col1, col2 = st.columns(2)
     with col1:
-        st.button("Forecast for Period 1", on_click=lambda: go_to(lambda: forecast_detail("Period 1")))
+        st.button("Forecast for Period 1", on_click=lambda: push_page(lambda: forecast_detail("Period 1")))
     with col2:
-        st.button("Forecast for Period 2", on_click=lambda: go_to(lambda: forecast_detail("Period 2")))
+        st.button("Forecast for Period 2", on_click=lambda: push_page(lambda: forecast_detail("Period 2")))
 
 def forecast_detail(period):
     st.write(f"This is the forecast for {period}.")
@@ -101,13 +96,13 @@ def forecast_detail(period):
 
 def weather_crop_advice():
     st.subheader("Weather Advice")
-    st.button("Crop 1", on_click=lambda: go_to(lambda: st.write("Weather advice for Crop 1")))
-    st.button("Crop 2", on_click=lambda: go_to(lambda: st.write("Weather advice for Crop 2")))
+    st.button("Crop 1", on_click=lambda: push_page(lambda: st.write("Weather advice for Crop 1")))
+    st.button("Crop 2", on_click=lambda: push_page(lambda: st.write("Weather advice for Crop 2")))
 
 def crop_advice():
     st.subheader("Crop Advice")
-    st.button("Cultivation", on_click=lambda: go_to(lambda: st.write("Cultivation advice coming soon.")))
-    st.button("Pest and Diseases", on_click=lambda: go_to(lambda: st.write("Pest control info coming soon.")))
+    st.button("Cultivation", on_click=lambda: push_page(lambda: st.write("Cultivation advice coming soon.")))
+    st.button("Pest and Diseases", on_click=lambda: push_page(lambda: st.write("Pest control info coming soon.")))
 
 def price_info():
     st.subheader("Crop Prices")
@@ -116,15 +111,15 @@ def price_info():
 
 def gap():
     st.subheader("Good Agricultural Practices")
-    st.button("Conservation Agriculture", on_click=lambda: go_to(lambda: st.markdown("""
+    st.button("Conservation Agriculture", on_click=lambda: push_page(lambda: st.markdown("""
         Conservation Agriculture improves soil health and productivity.
     """)))
-    st.button("Three Principles", on_click=lambda: go_to(lambda: st.markdown("""
+    st.button("Three Principles", on_click=lambda: push_page(lambda: st.markdown("""
         - Minimal soil disturbance  
         - Permanent soil cover  
         - Crop rotation  
     """)))
-    st.button("Step-by-Step Guide", on_click=lambda: go_to(lambda: st.markdown("""
+    st.button("Step-by-Step Guide", on_click=lambda: push_page(lambda: st.markdown("""
         1. Assess  
         2. Plan  
         3. Implement  
@@ -137,8 +132,8 @@ def notifications():
     st.checkbox("Crop Alerts", key="crop")
     st.write("Note: These toggles simulate preference settings.")
 
-# App Start
+# --- Launch App ---
 if not st.session_state.page_stack:
-    st.session_state.page_stack.append(welcome)
+    push_page(welcome)
 
-render_page(st.session_state.page_stack[-1])
+render_current_page()

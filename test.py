@@ -1,5 +1,55 @@
 import streamlit as st
 
+def styled_button(label, key=None):
+    button_html = f"""
+    <style>
+        .custom-button {{
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75em 1.5em;
+            width: 100%;
+            text-align: center;
+            font-size: 1em;
+            border-radius: 6px;
+            cursor: pointer;
+        }}
+        .custom-button:hover {{
+            background-color: #0056b3;
+        }}
+        .button-container {{
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }}
+    </style>
+    <div class="button-container">
+        <form action="" method="post">
+            <button class="custom-button" name="custom_button" type="submit">{label}</button>
+        </form>
+    </div>
+    """
+    return st.markdown(button_html, unsafe_allow_html=True)
+
+if "button_pressed" not in st.session_state:
+    st.session_state.button_pressed = None
+
+def render_menu():
+    st.subheader("Main Menu")
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("🌦 Weather", key="weather"):
+            st.session_state.button_pressed = "weather"
+    with col2:
+        if st.button("💲 Price Info", key="price"):
+            st.session_state.button_pressed = "price"
+
+    if st.session_state.button_pressed == "weather":
+        st.write("You chose weather!")
+    elif st.session_state.button_pressed == "price":
+        st.write("You chose price info.")
+
 # Initialize session state for navigation and version
 if "page_stack" not in st.session_state:
     st.session_state.page_stack = []
@@ -25,7 +75,7 @@ def go_back():
 def render_page(func):
     func()
     if len(st.session_state.page_stack) > 1:
-        st.button("⬅️ Back", on_click=go_back)
+        st.button("Back", on_click=go_back)
 
 # --- Pages ---
 def welcome():

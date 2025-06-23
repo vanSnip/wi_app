@@ -1,5 +1,8 @@
 import streamlit as st
 from functools import partial
+import pandas as pd
+import os
+
 
 # --- CSS styling ---
 st.markdown(
@@ -64,6 +67,17 @@ cropPrices = {
     "crop_2": 187.5,
 }
 
+#-- import data --
+@st.cache_data
+def load_crop_prices():
+    path = os.path.join("data", "crop_prices.csv")
+    df = pd.read_csv()
+    return dict(zip(df["crop"], df["price"]))
+
+cropPrices = load_crop_prices()
+
+
+#-- define functions --
 def toggle_notification(key):
     st.session_state.notificationsEnabled[key] = not st.session_state.notificationsEnabled[key]
 

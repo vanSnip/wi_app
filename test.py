@@ -329,4 +329,13 @@ def activate_price_alerts(crop):
     if st.button("To begin"):
         st.experimental_rerun()
 
+# Entry point
+if __name__ == "__main__":
+    if len(st.session_state.history) == 0:
+        # Start with the welcome screen
+        update_step(render_welcome)
+    else:
+        # Render the last step in the history stack
+        last_step = st.session_state.history[-1]
+        last_step()
 

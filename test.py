@@ -1,264 +1,203 @@
 import streamlit as st
 
-# Initialize session state variables if they don't exist yet
-if 'history' not in st.session_state:
-    st.session_state.history = []
-if 'version' not in st.session_state:
-    st.session_state.version = "data_saving"
-if 'version_show' not in st.session_state:
-    st.session_state.version_show = "Data Saving Version"
-if 'notifications' not in st.session_state:
-    st.session_state.notifications = {'weather': False, 'crop': False}
-if 'crop_prices' not in st.session_state:
-    st.session_state.crop_prices = {'crop_1': 215.25, 'crop_2': 187.5}
+# Initialize session state variables
+if "history" not in st.session_state:
+    st.session_state.history = []  # stack of steps visited
 
+def go_to(step_func):
+    """Navigate to a new step and save history."""
+    st.session_state.history.append(step_func)
+    step_func()
 
 def go_back():
+    """Go back to previous step if possible."""
     if len(st.session_state.history) > 1:
-        st.session_state.history.pop()  # remove current page
-        st.session_state.history.pop()  # remove previous (to re-run it freshly)
-    render_current_step()
+        st.session_state.history.pop()  # remove current step
+    st.session_state.history[-1]()  # render previous step
 
-
-def update_step(func, *args):
-    def wrapped():
-        func(*args)
-    st.session_state.history.append(wrapped)
-    render_current_step()
-
-
-def render_current_step():
-    st.rerun()  # re-run app to render last step
-
+# --- Define your steps as functions ---
 
 def render_welcome():
-    st.title("Decision Tree Sketch")
-    st.markdown(f"### Welcome, what would you like to know?")
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Weather information"):
-            update_step(render_weather_info)
-        if st.button("Crop Advice"):
-            update_step(render_crop_advice_1)
-        if st.button("Price information for crops"):
-            update_step(render_price_info_1)
-    with col2:
-        if st.button("Good Agricultural Practices"):
-            update_step(render_GAP_1)
-        if st.button("Notifications"):
-            update_step(render_notifications_1)
-        if st.button("Version"):
-            update_step(render_version_1)
-
-
-def render_version_1():
-    st.header(f"Select the version you want (current: {st.session_state.version_show})")
-    if st.button("Data Saving"):
-        st.session_state.version = "data_saving"
-        st.session_state.version_show = "Data Saving Version"
-        st.success("Version changed to Data Saving")
-    if st.button("Performance Optimised"):
-        st.session_state.version = "performance"
-        st.session_state.version_show = "Performance Optimised Version"
-        st.success("Version changed to Performance Optimised")
-    if st.button("Extension Officers Version"):
-        st.session_state.version = "extension"
-        st.session_state.version_show = "Extension Officers Version"
-        st.success("Version changed to Extension Officers Version")
-
-    if st.button("Back to Main Menu"):
-        update_step(render_welcome)
-
+    st.title("Welcome, what would you like to know?")
+    if st.button("Weather information"):
+        go_to(render_weather_info)
+    if st.button("Crop Advice"):
+        go_to(render_crop_advice_1)
+    if st.button("Price information for crops"):
+        go_to(render_price_info_1)
+    if st.button("Good Agricultural Practices"):
+        go_to(render_gap_1)
+    if st.button("Notifications"):
+        go_to(render_notifications_1)
+    if st.button("Version"):
+        go_to(render_version_1)
 
 def render_weather_info():
     st.header("Weather Information")
-    st.markdown("This is the current weather in the Mekong Delta.")
-    if st.session_state.version == "performance":
-        st.image("https://example.com/performance-graph.png", width=300)
-    elif st.session_state.version == "extension":
-        st.image("https://example.com/extension-graph.png", width=300)
-    else:
-        st.info("Weather graphics are not available in this version to save data.")
-    
+    st.write("This is the current weather in the Mekong Delta.")
+    # Example buttons
     if st.button("Go to forecasts"):
-        update_step(render_weather_forecasts_1)
+        go_to(render_weather_forecasts_1)
     if st.button("Get weather advice for crops"):
-        update_step(render_weather_crop_advice_1)
+        go_to(render_weather_crop_advice_1)
 
-    if st.button("Back to Main Menu"):
-        update_step(render_welcome)
-
-
-def render_weather_crop_advice_1():
-    st.header("For what crop do you need weather advice?")
-    if st.button("Crop 1"):
-        update_step(render_weather_crop_advice_3, "crop_1")
-    if st.button("Crop 2"):
-        update_step(render_weather_crop_advice_3, "crop_2")
-
-    if st.button("Back"):
+    if st.button("Back to previous step"):
         go_back()
-
-
-def render_weather_crop_advice_3(crop):
-    st.header(f"Weather advice for {crop}")
-    st.info("Here would be the advice tailored to this crop.")
-    if st.button("Back"):
-        go_back()
-
 
 def render_weather_forecasts_1():
     st.header("Weather Forecasts")
-    if st.button("Get forecast for period 1"):
-        update_step(render_weather_forecasts_2, "period_1")
-    if st.button("Get forecast for period 2"):
-        update_step(render_weather_forecasts_2, "period_2")
-    if st.button("Back"):
+    if st.button("Forecast period 1"):
+        go_to(lambda: render_weather_forecasts_2("period_1"))
+    if st.button("Forecast period 2"):
+        go_to(lambda: render_weather_forecasts_2("period_2"))
+    if st.button("Back to previous step"):
         go_back()
-
 
 def render_weather_forecasts_2(period):
-    st.header(f"Forecast for {period}")
-    st.write("TEST content here.")
-    st.image("https://www.nahss.nl/wp-content/uploads/2023/05/NAHSS-logo-text-without-background-600x236.png", width=240)
-    if st.button("Back"):
+    st.subheader(f"Forecast for {period}")
+    st.write("Forecast details here...")
+    if st.button("Back to previous step"):
         go_back()
 
+def render_weather_crop_advice_1():
+    st.header("Weather advice for crops")
+    if st.button("Crop 1"):
+        go_to(lambda: render_weather_crop_advice_3("crop_1"))
+    if st.button("Crop 2"):
+        go_to(lambda: render_weather_crop_advice_3("crop_2"))
+    if st.button("Back to previous step"):
+        go_back()
+
+def render_weather_crop_advice_3(crop):
+    st.subheader(f"Advice for {crop}")
+    st.write("Advice details here...")
+    if st.button("Back to previous step"):
+        go_back()
 
 def render_crop_advice_1():
     st.header("For what crop do you need advice?")
     if st.button("Cultivation"):
-        update_step(render_crop_advice_2, "cultivation")
+        go_to(lambda: render_crop_advice_2("cultivation"))
     if st.button("Pest and diseases"):
-        update_step(render_crop_advice_2, "pest_and_diseases")
-    if st.button("Back"):
+        go_to(lambda: render_crop_advice_2("pest_and_diseases"))
+    if st.button("Back to previous step"):
         go_back()
 
-
-def render_crop_advice_2(advice_type):
-    if advice_type == "pest_and_diseases":
-        st.header("What type of crop do you need advice for pest and disease management?")
+def render_crop_advice_2(type_):
+    st.subheader(f"Advice type: {type_}")
+    if type_ == "pest_and_diseases":
         if st.button("Crop 1"):
-            update_step(render_pnd_1, "crop_1")
+            go_to(lambda: render_pnd_1("crop_1"))
         if st.button("Crop 2"):
-            update_step(render_pnd_1, "crop_2")
+            go_to(lambda: render_pnd_1("crop_2"))
     else:
-        st.header("For what crop do you need cultivation advice?")
         if st.button("Crop 1"):
-            update_step(render_crop_cultivation_adv, "crop_1")
+            go_to(lambda: render_crop_cultivation_adv("crop_1"))
         if st.button("Crop 2"):
-            update_step(render_crop_cultivation_adv, "crop_2")
-
-    if st.button("Back"):
+            go_to(lambda: render_crop_cultivation_adv("crop_2"))
+    if st.button("Back to previous step"):
         go_back()
-
 
 def render_pnd_1(crop):
-    st.header(f"Pest and Disease advice for {crop}")
-    st.info("Advice would be shown here.")
-    if st.button("Back"):
+    st.subheader(f"Pest and Disease advice for {crop}")
+    st.write("Details here...")
+    if st.button("Back to previous step"):
         go_back()
-
 
 def render_crop_cultivation_adv(crop):
-    st.header(f"Cultivation advice for {crop}")
-    st.info("Advice would be shown here.")
-    if st.button("Back"):
+    st.subheader(f"Cultivation advice for {crop}")
+    st.write("Details here...")
+    if st.button("Back to previous step"):
         go_back()
-
 
 def render_price_info_1():
     st.header("What crop do you want to know the historical prices of?")
-    cp = st.session_state.crop_prices
-    if st.button(f"Crop 1 - ${cp['crop_1']:.2f}"):
-        update_step(render_price_info_2, "crop_1")
-    if st.button(f"Crop 2 - ${cp['crop_2']:.2f}"):
-        update_step(render_price_info_2, "crop_2")
-    if st.button("Back to Main Menu"):
-        update_step(render_welcome)
-
-
-def render_price_info_2(crop):
-    st.header(f"Historical price data for {crop}")
-    st.write("Table and location info would be inserted here.")
-    if st.button("Back"):
+    if st.button("Crop 1 - $215.25"):
+        go_to(lambda: render_price_info_2("crop_1"))
+    if st.button("Crop 2 - $187.50"):
+        go_to(lambda: render_price_info_2("crop_2"))
+    if st.button("Back to previous step"):
         go_back()
 
+def render_price_info_2(crop):
+    st.subheader(f"Historical prices for {crop}")
+    st.write("Price data table here...")
+    if st.button("Back to previous step"):
+        go_back()
 
-def render_GAP_1():
+def render_gap_1():
     st.header("What type of Good Agricultural Practices do you want to know about?")
     if st.button("Conservation Agriculture"):
-        update_step(render_GAP_2, "Conservation_agriculture")
+        go_to(lambda: render_gap_2("Conservation_agriculture"))
     if st.button("3 principles of conservation agriculture"):
-        update_step(render_GAP_2, "three_principles")
+        go_to(lambda: render_gap_2("three_principles"))
     if st.button("Step by Step guide"):
-        update_step(render_GAP_2, "SBS_guide")
-    if st.button("Back to Main Menu"):
-        update_step(render_welcome)
+        go_to(lambda: render_gap_2("SBS_guide"))
+    if st.button("Back to previous step"):
+        go_back()
 
-
-def render_GAP_2(topic):
-    if topic == "Conservation_agriculture":
-        st.header("Conservation Agriculture")
-        st.write("Conservation Agriculture is a sustainable farming practice that improves soil health and productivity.")
-    elif topic == "three_principles":
-        st.header("The three principles of conservation agriculture are:")
-        st.markdown("""
+def render_gap_2(type_):
+    st.subheader(type_.replace("_", " ").title())
+    if type_ == "Conservation_agriculture":
+        st.write("Sustainable farming practices info...")
+    elif type_ == "three_principles":
+        st.write("""
         - Minimal soil disturbance  
         - Permanent soil cover  
         - Diversity in crop rotations
         """)
-    elif topic == "SBS_guide":
-        st.header("Step by Step guide to implementing Good Agricultural Practices:")
-        st.markdown("""
+    elif type_ == "SBS_guide":
+        st.write("""
         1. Assess your current practices  
         2. Plan improvements  
         3. Implement changes gradually  
         4. Monitor and adjust as needed
         """)
-    if st.button("Back"):
+    if st.button("Back to previous step"):
         go_back()
-
 
 def render_notifications_1():
-    st.header("What type of notifications would you like to receive?")
-    weather_enabled = st.session_state.notifications['weather']
-    weather_label = "Deactivate Weather Alerts" if weather_enabled else "Activate Weather Alerts"
+    st.header("Notifications Settings")
+    weather_status = st.session_state.get("notifications_weather", False)
+    toggle_label = "Deactivate Weather Alerts" if weather_status else "Activate Weather Alerts"
 
-    if st.button(weather_label):
-        st.session_state.notifications['weather'] = not weather_enabled
-        msg = "Weather alerts activated." if st.session_state.notifications['weather'] else "Weather alerts deactivated."
-        st.success(msg)
+    if st.button(toggle_label):
+        st.session_state.notifications_weather = not weather_status
+        st.experimental_rerun()  # Only here you might want to refresh UI, but can also avoid by design
 
     if st.button("Crop Cultivation"):
-        update_step(render_notifications_2, "crop_cultivation")
+        go_to(lambda: render_notifications_2("crop_cultivation"))
     if st.button("Price Updates"):
-        update_step(render_notifications_2, "price_updates")
-    if st.button("Back to Main Menu"):
-        update_step(render_welcome)
-
-
-def render_notifications_2(notif_type):
-    if notif_type == "crop_cultivation":
-        st.header("Toggle notifications for crops")
-        if st.button("For crop 1"):
-            st.success("Crop 1 notifications activated (placeholder)")
-        if st.button("For crop 2"):
-            st.success("Crop 2 notifications activated (placeholder)")
-    elif notif_type == "price_updates":
-        st.header("What crop price updates would you like to receive?")
-        if st.button("About crop 1"):
-            st.success("Price updates for crop 1 activated (placeholder)")
-        if st.button("About crop 2"):
-            st.success("Price updates for crop 2 activated (placeholder)")
-
-    if st.button("Back"):
+        go_to(lambda: render_notifications_2("price_updates"))
+    if st.button("Back to previous step"):
         go_back()
 
+def render_notifications_2(type_):
+    st.subheader(f"Notifications for {type_}")
+    st.write("Configure notification settings here.")
+    if st.button("Back to previous step"):
+        go_back()
 
-# Main app controller
-if 'history' not in st.session_state or len(st.session_state.history) == 0:
-    st.session_state.history = [render_welcome]
+def render_version_1():
+    st.header(f"Select the version you want, current: {st.session_state.get('version_show', 'Data Saving Version')}")
+    if st.button("Data Saving"):
+        st.session_state.version = "data_saving"
+        st.session_state.version_show = "Data Saving Version"
+        go_back()
+    if st.button("Performance Optimized"):
+        st.session_state.version = "performance"
+        st.session_state.version_show = "Performance Optimized Version"
+        go_back()
+    if st.button("Extension Officers Version"):
+        st.session_state.version = "extension"
+        st.session_state.version_show = "Extension Officers Version"
+        go_back()
+    if st.button("Back to previous step"):
+        go_back()
 
-# Run the last step function in history
+# Initial setup and render first step
+if not st.session_state.history:
+    st.session_state.history.append(render_welcome)
+
+# Render current step
 st.session_state.history[-1]()

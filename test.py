@@ -35,18 +35,18 @@ if "selected_crop" not in st.session_state:
 # --- Navigation Functions ---
 def push_page(page_func):
     st.session_state.page_stack.append(page_func)
-    st.experimental_rerun()
+    st.rerun()
 
 def go_back():
     if len(st.session_state.page_stack) > 1:
         st.session_state.page_stack.pop()
-        st.experimental_rerun()
+        st.rerun()
 
 # --- Page Rendering ---
 def render_page():
     st.session_state.page_stack[-1]()  # Call the current page function
     if len(st.session_state.page_stack) > 1:
-        st.button("⬅️ Back", on_click=go_back)
+        st.button("Back", on_click=go_back)
 
 # --- Page Definitions ---
 def welcome():

@@ -30,12 +30,12 @@ if "notifications" not in st.session_state:
 # Navigation Functions
 def go_to(page_func):
     st.session_state.page_stack.append(page_func)
-    st.experimental_rerun()
+    st.rerun()
 
 def go_back():
     if len(st.session_state.page_stack) > 1:
         st.session_state.page_stack.pop()
-        st.experimental_rerun()
+        st.rerun()
 
 def render_page(func):
     func()

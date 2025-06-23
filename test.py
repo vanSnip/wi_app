@@ -84,7 +84,7 @@ def reset():
 
 # --- Screens ---
 def render_welcome(_=None):
-    st.header("Welcome, what would you like to know?")
+    st.header("Xin Chao, what would you like to know?")
     st.button("Weather information", on_click=partial(navigate, "weather_info"))
     st.button("Crop Advice", on_click=partial(navigate, "crop_advice_1"))
     st.button("Price information for crops", on_click=partial(navigate, "price_info_1"))

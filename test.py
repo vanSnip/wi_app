@@ -22,27 +22,23 @@ def render_page():
 
 # --- Styled Button ---
 def styled_button(label, page_name):
-    st.markdown(f"""
+# Inject global button styles
+    st.markdown("""
         <style>
-            .custom-button {{
-                background-color: #007bff;
-                color: white;
-                border: none;
-                padding: 0.75em;
-                width: 100%;
-                text-align: center;
-                font-size: 1em;
-                border-radius: 6px;
-                cursor: pointer;
-                margin-bottom: 10px;
-            }}
-            .custom-button:hover {{
-                background-color: #0056b3;
-            }}
+        div.stButton > button {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border-radius: 6px;
+            padding: 0.75em 1.5em;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+        }
+        div.stButton > button:hover {
+            background-color: #0056b3;
+        }
         </style>
-        <form action="" method="post">
-            <button class="custom-button" type="submit" name="nav_button" value="{page_name}">{label}</button>
-        </form>
     """, unsafe_allow_html=True)
 
     if st.session_state.get("nav_button") == page_name:

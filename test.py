@@ -28,7 +28,7 @@ def update_step(func, *args):
 
 
 def render_current_step():
-    st.experimental_rerun()  # re-run app to render last step
+    st.rerun()  # re-run app to render last step
 
 
 def render_welcome():

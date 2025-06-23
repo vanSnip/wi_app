@@ -29,8 +29,8 @@ if "notifications" not in st.session_state:
 if "page_stack" not in st.session_state:
     st.session_state.page_stack = []
 
-if "current_page" not in st.session_state:
-    st.session_state.current_page = welcome
+#if "current_page" not in st.session_state:
+#    st.session_state.current_page = welcome
 
 def render_page():
     st.session_state.current_page()

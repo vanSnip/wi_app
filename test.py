@@ -46,8 +46,8 @@ st.markdown(
 #-- import data --
 @st.cache_data
 def load_crop_prices():
-    path = os.path.join("data", "crop_prices.csv")
-    df = pd.read_csv(https://github.com/vanSnip/wi_app/blob/main/price_data/crop_prices.csv)
+    url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/crop_prices.csv"
+    df = pd.read_csv(url)
     return dict(zip(df["crop"], df["price"]))
 
 cropPrices = load_crop_prices()

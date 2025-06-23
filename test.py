@@ -189,8 +189,8 @@ def crop_cultivation_adv(crop):
 # --- Price Info Screens ---
 def price_info_1(_=None):
     st.header("What crop do you want to know the historical prices of?")
-    st.button(f"Crop 1 - ${cropPrices['crop_1']:.2f}", on_click=partial(navigate, "price_info_2", "crop_1"))
-    st.button(f"Crop 2 - ${cropPrices['crop_2']:.2f}", on_click=partial(navigate, "price_info_2", "crop_2"))
+    st.button(f"Crop 1 - {cropPrices['crop_1']:.2f}", on_click=partial(navigate, "price_info_2", "crop_1"))
+    st.button(f"Crop 2 - {cropPrices['crop_2']:.2f}", on_click=partial(navigate, "price_info_2", "crop_2"))
     back_button()
 
 def price_info_2(crop):

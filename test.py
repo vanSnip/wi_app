@@ -44,7 +44,7 @@ st.markdown(
 )
 
 #-- import data --
-@st.cache_data
+@st.cache_data(ttl=600)  # Refresh every 60 seconds
 def load_crop_prices():
     url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/crop_prices.csv"
     df = pd.read_csv(url)

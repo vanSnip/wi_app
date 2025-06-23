@@ -329,5 +329,4 @@ def activate_price_alerts(crop):
     if st.button("To begin"):
         st.experimental_rerun()
 
-# Entry point
-if "history" not
+

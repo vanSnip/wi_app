@@ -43,7 +43,16 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- Initialize session state ---
+#-- import data --
+@st.cache_data
+def load_crop_prices():
+    path = os.path.join("data", "crop_prices.csv")
+    df = pd.read_csv(https://github.com/vanSnip/wi_app/blob/main/price_data/crop_prices.csv)
+    return dict(zip(df["crop"], df["price"]))
+
+cropPrices = load_crop_prices()
+
+# --- Initialize session states ---
 if "history" not in st.session_state:
     st.session_state.history = [("welcome", None)]
 
@@ -61,21 +70,6 @@ if "version" not in st.session_state:
 
 if "version_show" not in st.session_state:
     st.session_state.version_show = "Data Saving Version"
-
-cropPrices = {
-    "crop_1": 215.25,
-    "crop_2": 187.5,
-}
-
-#-- import data --
-@st.cache_data
-def load_crop_prices():
-    path = os.path.join("data", "crop_prices.csv")
-    df = pd.read_csv()
-    return dict(zip(df["crop"], df["price"]))
-
-cropPrices = load_crop_prices()
-
 
 #-- define functions --
 def toggle_notification(key):

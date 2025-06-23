@@ -232,7 +232,7 @@ def notifications_2(type_):
     back_button()
 
 def toggle_crop_alerts(crop):
-    # Placeholder toggle logic
+    # Example toggle logic
     st.session_state.notificationsEnabled["crop"] = not st.session_state.notificationsEnabled["crop"]
 
 def toggle_price_alerts(crop):
@@ -246,4 +246,30 @@ screen_funcs = {
     "weather_info": weather_info,
     "weather_forecasts_1": weather_forecasts_1,
     "weather_forecasts_2": weather_forecasts_2,
-    "weather_crop_advice
+    "weather_crop_advice_1": weather_crop_advice_1,
+    "weather_crop_advice_3": weather_crop_advice_3,
+    "crop_advice_1": crop_advice_1,
+    "crop_advice_2": crop_advice_2,
+    "pnd_1": pnd_1,
+    "crop_cultivation_adv": crop_cultivation_adv,
+    "price_info_1": price_info_1,
+    "price_info_2": price_info_2,
+    "GAP_1": GAP_1,
+    "GAP_2": GAP_2,
+    "notifications_1": notifications_1,
+    "notifications_2": notifications_2,
+}
+
+# --- Main app ---
+def main():
+    screen_name, param = st.session_state.history[-1]
+    if screen_name in screen_funcs:
+        if param is not None:
+            screen_funcs[screen_name](param)
+        else:
+            screen_funcs[screen_name]()
+    else:
+        st.error(f"Unknown screen: {screen_name}")
+
+if __name__ == "__main__":
+    main()

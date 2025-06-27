@@ -7,10 +7,9 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
-load_dotenv("wi_app_token.env")
 import os
 
-token = os.getenv("GITHUB_TOKEN")
+
 
 # Column names from GeoNames documentation
 columns = [

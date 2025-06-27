@@ -3,6 +3,20 @@ from functools import partial
 import pandas as pd
 import os
 import requests
+import ast
+
+@st.cache_data(ttl=600)
+#-- List Import --
+def load_list_from_github(filename):
+    url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/scalability/{filename}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return ast.literal_eval(response.text)  # Safe parsing of list string
+    else:
+        return []
+        
+cities = load_list_from_github("selected_cities.txt")
+periods = load_list_from_github("selected_periods.txt")        
 
 # --- CSS styling ---
 st.markdown(
@@ -142,15 +156,14 @@ def version_1(_=None):
 
 def set_location(_=None):
     st.header(f"Select your location (your current location is: {st.session_state.loc})")
-    
+
     def set_location_state(loc):
         st.session_state.loc = loc
-        go_back() # go back to welcome screen after setting
+        go_back()
 
-    st.button("Hanoi", on_click=partial(set_location_state, "Hanoi"))
-    st.button("Western Region (Mekong River Delta)", on_click=partial(set_location_state, "Western Region"))
-    st.button("Ho Chi Minh City", on_click=partial(set_location_state, "Ho Chi Minh City"))
-    st.button("Red River Delta", on_click=partial(set_location_state, "Red River Delta"))
+    for city in cities:
+        st.button(city, on_click=partial(set_location_state, city))
+
     back_button()
 
 def weather_forecast_period(_=None):
@@ -162,17 +175,17 @@ def weather_forecast_period(_=None):
         filename = f"forecast_graph_{city.replace(' ', '_').lower()}_{months}_months.png"
         github_url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/{filename}"
 
-        # Try to fetch the file (check if already uploaded)
         if requests.get(github_url).status_code == 200:
             st.session_state.plot_url = github_url
 
-
         navigate("weather_forecast_graph")
 
-    st.button("1 month", on_click=partial(select_period, 1))
-    st.button(" 3 months", on_click=partial(select_period, 3))
-    st.button(" 6 months", on_click=partial(select_period, 6))
+    for p in periods:
+        st.button(f"{p} month{'s' if p > 1 else ''}", on_click=partial(select_period, p))
+
     back_button()
+
+
 def weather_forecast_graph(_=None):
     city = st.session_state.loc
     months = st.session_state.selected_period

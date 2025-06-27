@@ -276,7 +276,7 @@ def price_info_1(_=None):
             label = f"{crop} - {price:.2f}"
         else:
             label = f"{crop} - (no price available)"
-        st.button(label, on_click=partial(navigate, "price_info_2", crop_key))
+        st.button(label, on_click=partial(navigate, "price_info_2", crop))
     back_button()
 
 def price_info_2(crop):

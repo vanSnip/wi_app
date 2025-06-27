@@ -102,7 +102,7 @@ def get_nasa_power_weather(lat, lon, months=6):
 
 def create_weather_plot(city="Hanoi", coor_data=coord_data, label="Location", months=6):
 
-    lat, lon = get_lon_lat_data(city, coord_data)
+    lat, lon, _, _ = get_lon_lat_data(city, coord_data)
     df = get_nasa_power_weather(lat, lon, months)
     period_text = f"{months} month{'s' if months > 1 else ''}"
     filename = f"{label.replace(' ', '_').lower()}_{period_text.replace(' ', '_')}.png"

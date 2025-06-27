@@ -52,6 +52,14 @@ def load_crop_prices():
 
 cropPrices = load_crop_prices()
 
+#--Get forecast graphs--
+def get_forecast(period):
+    # Map each period to its image filename
+    filename = f"forecast_graph_for_{period}.png"
+    # Full URL from your GitHub repo (use raw.githubusercontent.com)
+    url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/{filename}"
+    return url
+
 # --- Initialize session states ---
 if "history" not in st.session_state:
     st.session_state.history = [("welcome", None)]
@@ -142,9 +150,10 @@ def weather_forecasts_1(_=None):
 
 def weather_forecasts_2(period):
     st.header(f"Forecast for {period}")
-    # Replace {Insert uploaded graph} with actual graphs if available
-    st.write("Test content")
-    st.image("https://www.nahss.nl/wp-content/uploads/2023/05/NAHSS-logo-text-without-background-600x236.png", width=300)
+    st.write(f"the graph is shown")
+    graph_url = get_forecast(period)
+    st.image(graph_url, caption=f"Forecast for {period}", use_column_width=True)
+    
     back_button()
 
 def weather_crop_advice_1(_=None):

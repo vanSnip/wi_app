@@ -15,10 +15,20 @@ def load_list_from_github(filename):
         return ast.literal_eval(response.text)  # Safe parsing of list string
     else:
         return []
-        
+
 def load_crop_prices():
     url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/crop_prices.csv"
     df = pd.read_csv(url)
+
+    # Clean column names
+    df.columns = df.columns.str.strip()
+
+    # Drop rows with missing values
+    df.dropna(subset=["crop", "price"], inplace=True)
+
+    # Strip whitespace from crop names
+    df["crop"] = df["crop"].str.strip()
+
     return dict(zip(df["crop"], df["price"]))
 
 cropPrices = load_crop_prices()

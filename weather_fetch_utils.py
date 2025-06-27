@@ -27,8 +27,8 @@ coord_data["longitude"] = pd.to_numeric(coord_data["longitude"])
 coord_data["population"] = pd.to_numeric(coord_data["population"])
 
 # Set this to your GitHub token (use env variable for security)
-GITHUB_TOKEN = "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"  # paste token exactly
-GITHUB_REPO = "yourusername/wi_app" 
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # paste token exactly
+GITHUB_REPO = "vanSnip/wi_app" 
 GITHUB_BRANCH = "main"
 GITHUB_GRAPH_DIR = "graphs"  # Directory in your repo
 

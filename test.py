@@ -172,7 +172,7 @@ def weather_forecast_period(_=None):
             st.session_state.plot_url = github_url
         else: # Create and upload plot
             filename = create_weather_plot(city, months) #returns filename,not path
-            path = os.path.join("graphs", filename)
+            local_path = os.path.join("graphs", filename)
             st.session_state.plot_url = upload_to_github(local_path, filename)
 
         navigate("weather_forecast_graph")

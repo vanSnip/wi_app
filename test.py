@@ -155,11 +155,11 @@ def set_location(_=None):
     back_button()
 
 def weather_forecast_period(_=None):
-    st.header(f"Select forecast period for {st.session_state.selected_city}")
+    st.header(f"Select forecast period for {st.session_state.loc}")
 
     def select_period(months):
         st.session_state.selected_period = months
-        city = st.session_state.selected_city
+        city = st.session_state.loc
         filename = f"{city.replace(' ', '_').lower()}_{months}_month.png"
         github_url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/{filename}"
 

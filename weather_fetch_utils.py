@@ -100,15 +100,16 @@ def get_nasa_power_weather(lat, lon, months=6):
         print("Raw API data:", data)
         raise Exception(f"Data parsing failed: {e}")
 
-def create_weather_plot(city, months, coord_data):
+def create_weather_plot(city="Hanoi", coor_data=coord_data, label="Location", months=6):
+
     lat, lon = get_lon_lat_data(city, coord_data)
     df = get_nasa_power_weather(lat, lon, months)
     period_text = f"{months} month{'s' if months > 1 else ''}"
-    filename = f"{city.replace(' ', '_').lower()}_{period_text.replace(' ', '_')}.png"
+    filename = f"{label.replace(' ', '_').lower()}_{period_text.replace(' ', '_')}.png"
 
     plt.figure(figsize=(12, 5))
     plt.plot(df.index, df["Temperature_C"], color='tab:red', linewidth=2)
-    plt.title(f"Daily Temperature in {city} (last {period_text})", fontsize=14)
+    plt.title(f"Daily Temperature in {label} (last {period_text})", fontsize=14)
     plt.xlabel("Date")
     plt.ylabel("Temperature (°C)")
     plt.grid(True)

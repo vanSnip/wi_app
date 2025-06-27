@@ -2,6 +2,7 @@ import streamlit as st
 from functools import partial
 import pandas as pd
 import os
+from weather_fetch_utils import create_weather_plot, upload_to_github, coord_data
 
 
 # --- CSS styling ---
@@ -78,6 +79,15 @@ if "version" not in st.session_state:
 
 if "version_show" not in st.session_state:
     st.session_state.version_show = "Data Saving Version"
+    
+if "loc" not in st.session_state:
+    st.session_state.loc = "Hanoi"
+
+if "selected_period" not in st.session_state:
+    st.session_state.selected_period = 1
+    
+if "plot_url" not in st.session_state:
+    st.session_state.plot_url = None
 
 #-- define functions --
 def toggle_notification(key):
@@ -135,14 +145,50 @@ def set_location(_=None):
     
     def set_location_state(loc):
         st.session_state.loc = loc
-        go_back()  # go back to welcome screen after setting
+        navigate("weather_forecast_period")  # go back to welcome screen after setting
 
     st.button("Hanoi", on_click=partial(set_location_state, "Hanoi"))
     st.button("Western Region (Mekong River Delta)", on_click=partial(set_location_state, "Western Region"))
     st.button("Ho Chi Minh City", on_click=partial(set_location_state, "Ho Chi Minh City"))
     st.button("Red River Delta", on_click=partial(set_location_state, "Red River Delta"))
     back_button()
+
+def weather_forecast_period(_=None):
+    st.header(f"Select forecast period for {st.session_state.selected_city}")
+
+    def select_period(months):
+        st.session_state.selected_period = months
+        city = st.session_state.selected_city
+        filename = f"{city.replace(' ', '_').lower()}_{months}_month.png"
+        github_url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/{filename}"
+
+        # Try to fetch the file (check if already uploaded)
+        import requests
+        if requests.get(github_url).status_code == 200:
+            st.session_state.plot_url = github_url
+        else:
+            # Create and upload plot
+            local_path = create_weather_plot(city, months, coord_data)
+            st.session_state.plot_url = upload_to_github(local_path, filename)
+
+        navigate("weather_forecast_graph")
+
+    st.button("1 month", on_click=partial(select_period, 1))
+    st.button(" 3 months", on_click=partial(select_period, 3))
+    st.button(" 6 months", on_click=partial(select_period, 6))
+
+    back_button()
     
+def weather_forecast_graph(_=None):
+    city = st.session_state.selected_city
+    months = st.session_state.selected_period
+    plot_url = st.session_state.plot_url
+
+    st.header(f"Weather in {city} - Last {months} month{'s' if months > 1 else ''}")
+    st.image(plot_url, caption=f"Temperature in {city}", use_column_width=True)
+
+    back_button()
+
 # --- Weather Info Screens ---
 def weather_info(_=None):
     st.header("Weather Information")

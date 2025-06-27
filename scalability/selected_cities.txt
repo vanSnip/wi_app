@@ -1,1 +1,1 @@
-[1, 3, 6]
+['Hanoi', 'Western Region', 'Ho Chi Minh City', 'Red River Delta']

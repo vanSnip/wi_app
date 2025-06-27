@@ -351,7 +351,7 @@ screen_funcs = {
     "welcome": render_welcome,
     "version_1": version_1,
     "weather_info": weather_info,
-    "weather_forecasts_1": weather_forecasts_1,
+    #"weather_forecasts_1": weather_forecasts_1,
     "weather_forecasts_2": weather_forecasts_2,
     "weather_crop_advice_1": weather_crop_advice_1,
     "weather_crop_advice_3": weather_crop_advice_3,

@@ -7,7 +7,19 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+from dotenv import load_dotenv
+load_dotenv("wi_app_token.env")
 
+from pathlib import Path
+
+def get_downloads_folder():
+    home = Path.home()  # user's home directory
+    downloads = home / "Downloads"
+    return downloads
+
+# Usage
+save_dir = get_downloads_folder()
+os.makedirs(save_dir, exist_ok=True)  # make sure it exists
 
 # Column names from GeoNames documentation
 columns = [
@@ -97,7 +109,7 @@ def get_nasa_power_weather(lat, lon, months=6):
         print("Raw API data:", data)
         raise Exception(f"Data parsing failed: {e}")
 
-def create_weather_plot(city="Hanoi", coor_data=coord_data, label="Location", months=6):
+def create_weather_plot(city="Hanoi", coord_data=coord_data, label="Location", months=6):
 
     lat, lon, _, _ = get_lon_lat_data(city, coord_data)
     df = get_nasa_power_weather(lat, lon, months)
@@ -113,11 +125,33 @@ def create_weather_plot(city="Hanoi", coor_data=coord_data, label="Location", mo
     plt.ylabel("Temperature (°C)")
     plt.grid(True)
     plt.tight_layout()
+    
+    if save_dir is None:
+        save_dir = get_downloads_folder()
+
+    filename = f"{city.replace(' ', '_').lower()}_{months}_months.png"
+    path = os.path.join(save_dir, filename)
+
+    # Save plot here
     plt.savefig(path, dpi=300)
     plt.close()
-    return filename
+    return path, filename
+    
+def get_file_sha(github_filename):
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_GRAPH_DIR}/{github_filename}"
+    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()["sha"]
+    elif response.status_code == 404:
+        return None  # file does not exist yet
+    else:
+        raise Exception(f"Failed to get file info: {response.status_code} - {response.text}")
+
 
 def upload_to_github(local_file_path, github_filename):
+    sha = get_file_sha(github_filename)  # None if new file
+
     with open(local_file_path, "rb") as f:
         content = base64.b64encode(f.read()).decode("utf-8")
 
@@ -128,13 +162,15 @@ def upload_to_github(local_file_path, github_filename):
     }
 
     data = {
-        "message": f"Add plot {github_filename}",
+        "message": f"Add/update plot {github_filename}",
         "branch": GITHUB_BRANCH,
         "content": content,
     }
-    print(GITHUB_TOKEN)
+    if sha:
+        data["sha"] = sha  # required for updating existing files
+
     response = requests.put(url, headers=headers, json=data)
     if response.status_code not in [200, 201]:
         raise Exception(f"GitHub upload failed: {response.status_code} - {response.text}")
-    
+
     return response.json()["content"]["download_url"]

@@ -361,6 +361,9 @@ screen_funcs = {
     "GAP_2": GAP_2,
     "notifications_1": notifications_1,
     "notifications_2": notifications_2,
+    "set_location": set_location,  
+    "weather_forecast_period": weather_forecast_period,  
+    "weather_forecast_graph": weather_forecast_graph,
 }
 
 # --- Main app ---

@@ -4,6 +4,9 @@ import pandas as pd
 import os
 from weather_fetch_utils import create_weather_plot, upload_to_github, coord_data
 
+from dotenv import load_dotenv
+
+load_dotenv("wi_app_token.env")
 
 # --- CSS styling ---
 st.markdown(

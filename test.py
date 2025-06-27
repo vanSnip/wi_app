@@ -6,7 +6,6 @@ import requests
 import ast
 
 #-- import data --
-
 @st.cache_data(ttl=600)
 def load_list_from_github(filename):
     url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/scalability/{filename}"
@@ -31,10 +30,23 @@ def load_crop_prices():
 
     return dict(zip(df["crop"], df["price"]))
 
-cropPrices = load_crop_prices()
+crops = load_list_from_github("selected_crops.txt")   
 cities = load_list_from_github("selected_cities.txt")
 periods = load_list_from_github("selected_periods.txt")    
-crops = load_list_from_github("selected_crops.txt")   
+
+cropPrices = load_crop_prices()
+
+#-- import text --
+def get_texts(filename):
+    url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/texts/{filename}"
+    
+    response = requests.get(url)
+    if response.status_code == 200:
+        return ast.literal_eval(response.text)  # Safe parsing of list string
+    else:
+        return []
+#We fetch text in dict form {crop_info_class; text} 
+
 
 # --- CSS styling ---
 st.markdown(
@@ -273,7 +285,6 @@ def crop_cultivation_adv(crop):
 # --- Price Info Screens ---
 def price_info_1(_=None):
     st.header("What crop do you want to know the historical prices of?")
-    st.write("Loaded crop prices:", cropPrices)
     for crop in crops:
         price = cropPrices.get(crop, None)
         if price is not None:

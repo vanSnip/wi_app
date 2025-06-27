@@ -132,7 +132,7 @@ def upload_to_github(local_file_path, github_filename):
         "branch": GITHUB_BRANCH,
         "content": content,
     }
-
+    print(GITHUB_TOKEN)
     response = requests.put(url, headers=headers, json=data)
     if response.status_code not in [200, 201]:
         raise Exception(f"GitHub upload failed: {response.status_code} - {response.text}")

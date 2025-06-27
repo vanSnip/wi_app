@@ -263,6 +263,7 @@ def crop_cultivation_adv(crop):
 # --- Price Info Screens ---
 def price_info_1(_=None):
     st.header("What crop do you want to know the historical prices of?")
+    st.write("Loaded crop prices:", cropPrices)
     for crop in crops:
         price = cropPrices.get(crop, None)
         if price is not None:

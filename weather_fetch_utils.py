@@ -35,37 +35,70 @@ GITHUB_REPO = "yourusername/wi_app"
 GITHUB_BRANCH = "main"
 GITHUB_GRAPH_DIR = "graphs"  # Directory in your repo
 
-def get_lon_lat_data(place_name, df):
+def get_lon_lat_data(place_name, df=coord_data):
+    """
+    Returns latitude, longitude, population, and geonameid for a given place name (case-insensitive).
+    If multiple matches exist, returns the top one with highest population.
+    """
     place_name = place_name.lower()
+
+    # Filter rows where name matches place_name (case-insensitive)
     matches = df[df["name"].str.lower() == place_name]
+
     if matches.empty:
-        raise Exception(f"Place '{place_name}' not found")
+        return None  # or raise Exception("Place not found")
+
+    # Sort by population descending and pick top one
     best_match = matches.sort_values("population", ascending=False).iloc[0]
-    return float(best_match["latitude"]), float(best_match["longitude"])
+
+    return (
+        float(best_match["latitude"]),
+        float(best_match["longitude"]),
+        int(best_match["population"]),
+        best_match["geonameid"]
+    )
 
 def get_nasa_power_weather(lat, lon, months=6):
+
     end_date = datetime.today()
     start_date = end_date - relativedelta(months=months)
+
     start_dt = start_date.strftime("%Y%m%d")
     end_dt = end_date.strftime("%Y%m%d")
+
     url = (
         f"https://power.larc.nasa.gov/api/temporal/daily/point?"
         f"start={start_dt}&end={end_dt}&latitude={lat}&longitude={lon}"
-        f"&community=SB&parameters=T2M&format=JSON"
+        f"&community=SB&parameters=T2M,PRECTOT&format=JSON"
     )
+
     response = requests.get(url)
     if response.status_code != 200:
         raise Exception(f"API request failed: {response.status_code}")
+
     data = response.json()
-    temp_data = data["properties"]["parameter"]["T2M"]
-    df = pd.DataFrame({
-        "date": pd.to_datetime(list(temp_data.keys())),
-        "Temperature_C": list(temp_data.values())
-    })
-    df.set_index("date", inplace=True)
-    df["Temperature_C"] = df["Temperature_C"].astype(float)
-    df = df[df["Temperature_C"] > 0]
-    return df
+
+    try:
+        param_data = data['properties']['parameter']
+        temp_data = param_data.get("T2M", {})
+        precip_data = param_data.get("PRECTOT", {})
+
+        if not temp_data:
+            raise Exception("Temperature (T2M) data missing")
+        
+        dates = list(temp_data.keys())
+        df = pd.DataFrame({
+            "date": pd.to_datetime(dates),
+            "Temperature_C": list(temp_data.values()),
+            "Precipitation_mm": [precip_data.get(d, None) for d in dates],
+        })
+
+        df.set_index("date", inplace=True)
+        return df
+
+    except Exception as e:
+        print("Raw API data:", data)
+        raise Exception(f"Data parsing failed: {e}")
 
 def create_weather_plot(city, months, coord_data):
     lat, lon = get_lon_lat_data(city, coord_data)

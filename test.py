@@ -2,6 +2,7 @@ import streamlit as st
 from functools import partial
 import pandas as pd
 import os
+import requests
 
 # --- CSS styling ---
 st.markdown(
@@ -158,17 +159,13 @@ def weather_forecast_period(_=None):
     def select_period(months):
         st.session_state.selected_period = months
         city = st.session_state.loc
-        filename = f"{city.replace(' ', '_').lower()}_{months}_months.png"
+        filename = f"forecast_graph_{city.replace(' ', '_').lower()}_{months}_months.png"
         github_url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/{filename}"
 
         # Try to fetch the file (check if already uploaded)
-        import requests
         if requests.get(github_url).status_code == 200:
             st.session_state.plot_url = github_url
-        else: # Create and upload plot
-            filename = create_weather_plot(city, months) #returns filename,not path
-            local_path = os.path.join("graphs", filename)
-            st.session_state.plot_url = upload_to_github(local_path, filename)
+
 
         navigate("weather_forecast_graph")
 

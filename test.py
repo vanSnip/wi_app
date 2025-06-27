@@ -271,8 +271,7 @@ def crop_cultivation_adv(crop):
 def price_info_1(_=None):
     st.header("What crop do you want to know the historical prices of?")
     for crop in crops:
-        crop_key = crop.lower().replace(" ", "_")
-        price = cropPrices.get(crop_key, None)
+        price = cropPrices.get(crop, None)
         if price is not None:
             label = f"{crop} - {price:.2f}"
         else:

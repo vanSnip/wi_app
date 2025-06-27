@@ -172,8 +172,6 @@ def weather_forecast_period(_=None):
     st.button("1 month", on_click=partial(select_period, 1))
     st.button(" 3 months", on_click=partial(select_period, 3))
     st.button(" 6 months", on_click=partial(select_period, 6))
-
-    back_button()
     
 def weather_forecast_graph(_=None):
     city = st.session_state.loc

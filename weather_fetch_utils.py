@@ -88,7 +88,7 @@ def upload_to_github(local_file_path, github_filename):
     with open(local_file_path, "rb") as f:
         content = base64.b64encode(f.read()).decode("utf-8")
 
-    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_GRAPH_DIR}/{github_filename}"
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/{GITHUB_BRANCH}/{GITHUB_GRAPH_DIR}/{github_filename}"
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
         "Accept": "application/vnd.github.v3+json",

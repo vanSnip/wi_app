@@ -102,8 +102,10 @@ def create_weather_plot(city="Hanoi", coor_data=coord_data, label="Location", mo
     lat, lon, _, _ = get_lon_lat_data(city, coord_data)
     df = get_nasa_power_weather(lat, lon, months)
     period_text = f"{months}_months"
+    
     filename = f"{city.replace(' ', '_').lower()}_{period_text.replace(' ', '_')}.png"
-    path = os.path.join("NAHSS/WI_app data fetch", filename)
+    path = os.path.join("graphs", filename)
+    
     plt.figure(figsize=(12, 5))
     plt.plot(df.index, df["Temperature_C"], color='tab:red', linewidth=2)
     plt.title(f"Daily Temperature in {label} (last {period_text})", fontsize=14)

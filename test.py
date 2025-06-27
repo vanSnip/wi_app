@@ -15,6 +15,13 @@ def load_list_from_github(filename):
     else:
         return []
         
+def load_crop_prices():
+    url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/crop_prices.csv"
+    df = pd.read_csv(url)
+    return dict(zip(df["crop"], df["price"]))
+
+cropPrices = load_crop_prices()
+        
 cities = load_list_from_github("selected_cities.txt")
 periods = load_list_from_github("selected_periods.txt")    
 crops = load_list_from_github("selected_crops.txt")   
@@ -64,8 +71,6 @@ def load_crop_prices():
     url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/crop_prices.csv"
     df = pd.read_csv(url)
     return dict(zip(df["crop"], df["price"]))
-
-cropPrices = load_crop_prices()
 
 #--Get forecast graphs--
 def get_forecast(period):

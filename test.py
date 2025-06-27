@@ -16,7 +16,8 @@ def load_list_from_github(filename):
         return []
         
 cities = load_list_from_github("selected_cities.txt")
-periods = load_list_from_github("selected_periods.txt")        
+periods = load_list_from_github("selected_periods.txt")    
+crops = load_list_from_github("selected_crops.txt")   
 
 # --- CSS styling ---
 st.markdown(

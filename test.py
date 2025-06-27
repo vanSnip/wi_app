@@ -140,12 +140,13 @@ def version_1(_=None):
     st.button("Choose Location", on_click=partial(navigate, "set_location"))
     back_button()
 #-- Set Location --
+
 def set_location(_=None):
     st.header(f"Select your location (your current location is: {st.session_state.loc})")
     
     def set_location_state(loc):
         st.session_state.loc = loc
-        navigate("weather_forecast_period")  # go back to welcome screen after setting
+        go_back() # go back to welcome screen after setting
 
     st.button("Hanoi", on_click=partial(set_location_state, "Hanoi"))
     st.button("Western Region (Mekong River Delta)", on_click=partial(set_location_state, "Western Region"))
@@ -200,7 +201,7 @@ def weather_info(_=None):
     else:
         st.write("Weather graphics are not available in this version to save data.")
 
-    st.button("Go to forecasts", on_click=partial(navigate, "weather_forecasts_1"))
+    st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
     st.button("Get weather advice for crops", on_click=partial(navigate, "weather_crop_advice_1"))
     back_button()
 

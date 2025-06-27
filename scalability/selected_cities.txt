@@ -1,0 +1,1 @@
+['Hanoi', 'Western Region', 'Ho Chi Minh City', 'Red River Delta']

@@ -212,12 +212,6 @@ def weather_info(_=None):
     st.button("Get weather advice for crops", on_click=partial(navigate, "weather_crop_advice_1"))
     back_button()
 
-def weather_forecasts_1(_=None):
-    st.header("Weather Forecasts")
-    st.button("Get forecast for period 1", on_click=partial(navigate, "weather_forecasts_2", "period_1"))
-    st.button("Get forecast for period 2", on_click=partial(navigate, "weather_forecasts_2", "period_2"))
-    back_button()
-
 def weather_forecasts_2(period):
     st.header(f"Forecast for {period}")
     st.write(f"the graph is shown")
@@ -228,8 +222,9 @@ def weather_forecasts_2(period):
 
 def weather_crop_advice_1(_=None):
     st.header("For what crop do you need weather advice?")
-    st.button("Crop 1", on_click=partial(navigate, "weather_crop_advice_3", "crop_1"))
-    st.button("Crop 2", on_click=partial(navigate, "weather_crop_advice_3", "crop_2"))
+    for crop in crops:
+        crop_key = crop.lower().replace(" ", "_")
+        st.button(crop, on_click=partial(navigate, "weather_crop_advice_3", crop_key))
     back_button()
 
 def weather_crop_advice_3(crop):
@@ -247,12 +242,14 @@ def crop_advice_1(_=None):
 def crop_advice_2(type_):
     if type_ == "pest_and_diseases":
         st.header("What type of crop do you need advice for pest and disease management?")
-        st.button("Crop 1", on_click=partial(navigate, "pnd_1", "crop_1"))
-        st.button("Crop 2", on_click=partial(navigate, "pnd_1", "crop_2"))
+        for crop in crops:
+            crop_key = crop.lower().replace(" ", "_")
+            st.button(crop, on_click=partial(navigate, "pnd_1", crop_key))
     else:
         st.header("For what crop do you need advice?")
-        st.button("Crop 1", on_click=partial(navigate, "crop_cultivation_adv", "crop_1"))
-        st.button("Crop 2", on_click=partial(navigate, "crop_cultivation_adv", "crop_2"))
+        for crop in crops:
+            crop_key = crop.lower().replace(" ", "_")
+            st.button(crop, on_click=partial(navigate, "crop_cultivation_adv", crop_key))
     back_button()
 
 def pnd_1(crop):

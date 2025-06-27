@@ -81,7 +81,7 @@ if "version_show" not in st.session_state:
     st.session_state.version_show = "Data Saving Version"
     
 if "loc" not in st.session_state:
-    st.session_state.loc = "Hanoi"
+    st.session_state.loc = "Ho Chi Minh City"
 
 if "selected_period" not in st.session_state:
     st.session_state.selected_period = 1

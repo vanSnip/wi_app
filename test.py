@@ -5,8 +5,9 @@ import os
 import requests
 import ast
 
+#-- import data --
+
 @st.cache_data(ttl=600)
-#-- List Import --
 def load_list_from_github(filename):
     url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/scalability/{filename}"
     response = requests.get(url)
@@ -21,7 +22,6 @@ def load_crop_prices():
     return dict(zip(df["crop"], df["price"]))
 
 cropPrices = load_crop_prices()
-        
 cities = load_list_from_github("selected_cities.txt")
 periods = load_list_from_github("selected_periods.txt")    
 crops = load_list_from_github("selected_crops.txt")   
@@ -64,13 +64,6 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
-#-- import data --
-@st.cache_data(ttl=600)  # Refresh every 60 seconds
-def load_crop_prices():
-    url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/crop_prices.csv"
-    df = pd.read_csv(url)
-    return dict(zip(df["crop"], df["price"]))
 
 #--Get forecast graphs--
 def get_forecast(period):

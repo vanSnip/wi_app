@@ -18,7 +18,7 @@ def load_list_from_github(filename):
 
 def load_crop_prices():
     url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/crop_prices.csv"
-    df = pd.read_csv(url)
+    df = pd.read_csv(url, sep='\t')
 
     # Clean column names
     df.columns = df.columns.str.strip()

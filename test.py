@@ -160,7 +160,7 @@ def weather_forecast_period(_=None):
     def select_period(months):
         st.session_state.selected_period = months
         city = st.session_state.loc
-        filename = f"{city.replace(' ', '_').lower()}_{months}_month.png"
+        filename = f"{city.replace(' ', '_').lower()}_{months}_months.png"
         github_url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/{filename}"
 
         # Try to fetch the file (check if already uploaded)
@@ -181,7 +181,7 @@ def weather_forecast_period(_=None):
     back_button()
     
 def weather_forecast_graph(_=None):
-    city = st.session_state.selected_city
+    city = st.session_state.loc
     months = st.session_state.selected_period
     plot_url = st.session_state.plot_url
 

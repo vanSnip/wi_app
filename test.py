@@ -97,6 +97,7 @@ def reset():
     st.session_state.notificationsEnabled = {"weather": False, "crop": False}
     st.session_state.version = "data_saving"
     st.session_state.version_show = "Data Saving Version"
+    st.session_state.loc = "Ho Chi Minh City"
 
 # --- Screens ---
 def render_welcome(_=None):
@@ -106,27 +107,42 @@ def render_welcome(_=None):
     st.button("Price information for crops", on_click=partial(navigate, "price_info_1"))
     st.button("Good Agricultural Practices", on_click=partial(navigate, "GAP_1"))
     st.button("Notifications", on_click=partial(navigate, "notifications_1"))
-    st.button("Version", on_click=partial(navigate, "version_1"))
+    st.button("Version and Locations", on_click=partial(navigate, "version_1"))
     # No back button on welcome screen
 
 def back_button():
     if st.button("Back to previous step", key="back_button", on_click=go_back):
         pass
 
+
 # --- Version Screens ---
 def version_1(_=None):
-    st.header(f"Select the version you want (current: {st.session_state.version_show})")
+    st.header(f"Select the version you want (current version: {st.session_state.version_show})")
 
     def set_version(ver, ver_show):
         st.session_state.version = ver
         st.session_state.version_show = ver_show
         go_back()  # go back to welcome screen after setting
 
-    st.button("Data Saving", on_click=partial(set_version, "data_saving", "Data Saving Version"))
-    st.button("Performance Optimised", on_click=partial(set_version, "performance", "Performance Optimised Version"))
+    st.button("Data Saving Version", on_click=partial(set_version, "data_saving", "Data Saving Version"))
+    st.button("Performance Optimised Version", on_click=partial(set_version, "performance", "Performance Optimised Version"))
     st.button("Extension Officers Version", on_click=partial(set_version, "extension", "Extension Officers Version"))
+    st.button("Choose Location", on_click=partial(navigate, "set_location"))
     back_button()
+#-- Set Location --
+def set_location(_=None):
+    st.header(f"Select your location (your current location is: {st.session_state.loc})")
+    
+    def set_location_state(loc):
+        st.session_state.loc = loc
+        go_back()  # go back to welcome screen after setting
 
+    st.button("Hanoi", on_click=partial(set_location_state, "Hanoi"))
+    st.button("Western Region (Mekong River Delta)", on_click=partial(set_location_state, "Western Region"))
+    st.button("Ho Chi Minh City", on_click=partial(set_location_state, "Ho Chi Minh City"))
+    st.button("Red River Delta", on_click=partial(set_location_state, "Red River Delta"))
+    back_button()
+    
 # --- Weather Info Screens ---
 def weather_info(_=None):
     st.header("Weather Information")

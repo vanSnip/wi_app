@@ -390,8 +390,8 @@ def notifications_1(_=None):
 def toggle_weather_alerts():
     st.session_state.notificationsEnabled["weather"] = not st.session_state.notificationsEnabled["weather"]
 
-def notifications_2(type):
-    if type == "crop_cultivation":
+def notifications_2(type_):
+    if type_ == "crop_cultivation":
         st.header("Toggle notifications for crops")
         for crop in crops:
             crop = crop.lower().replace(" ", "_")

@@ -387,25 +387,21 @@ def notifications_1(_=None):
     st.button("Crop Cultivation", on_click=partial(navigate, "notifications_2", "crop_cultivation")) #time dependent push notifications
     st.button("Price Updates", on_click=partial(navigate, "notifications_2", "price_updates")) #weekly push notifications
 
-    if st.button("To begin"):
-        reset()
     back_button()
 
 def toggle_weather_alerts():
     st.session_state.notificationsEnabled["weather"] = not st.session_state.notificationsEnabled["weather"]
 
-def notifications_2(type_):
-    if type_ == "crop_cultivation":
+def notifications_2(type):
+    if type == "crop_cultivation":
         st.header("Toggle notifications for crops")
-        crops = ["crop_1", "crop_2"]
         for crop in crops:
             state = st.session_state.notificationsEnabled[crop]
             label = f"{crop.replace('_', ' ').title()} ({'Enabled' if state else 'Disabled'} )"
             st.button(label, key=f"notif_{crop}", on_click=partial(toggle_notification, crop))
-    elif type_ == "price_updates":
+    elif type == "price_updates":
         st.header("What crop price updates would you like to receive?")
-        prices = ["price_1", "price_2"]
-        for price in prices:
+        for crop in crops:
             state = st.session_state.notificationsEnabled[price]
             label = f"{price.replace('_', ' ').title()} ({'Enabled' if state else 'Disabled'})"
             st.button(label, key=f"notif_{price}", on_click=partial(toggle_notification, price))

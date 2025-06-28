@@ -227,7 +227,8 @@ def weather_forecast_graph(_=None):
 # --- Weather Info Screens ---
 def weather_info(_=None):
     st.header("Weather Information")
-    
+
+    loc = st.session_state.loc
     if loc in todays_climate_data:
         temp, precip = todays_climate_data[loc]
         st.write(f"**Location:** {loc}")

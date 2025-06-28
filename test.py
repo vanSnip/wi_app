@@ -193,7 +193,6 @@ def weather_forecast_period(_=None):
 
         if requests.get(github_url).status_code == 200:
             st.session_state.plot_url = github_url
-
         navigate("weather_forecast_graph")
 
     for p in periods:
@@ -204,10 +203,8 @@ def weather_forecast_graph(_=None):
     city = st.session_state.loc
     months = st.session_state.selected_period
     plot_url = st.session_state.plot_url
-
     st.header(f"Weather in {city} - Last {months} month{'s' if months > 1 else ''}")
     st.image(plot_url, caption=f"Temperature in {city}", use_column_width=True)
-
     back_button()
 
 # --- Weather Info Screens ---
@@ -230,7 +227,6 @@ def weather_forecasts_2(period):
     st.write(f"the graph is shown")
     graph_url = get_forecast(period)
     st.image(graph_url, caption=f"Forecast for {period}", use_column_width=True)
-    
     back_button()
 
 def weather_crop_advice_1(_=None):
@@ -312,13 +308,11 @@ def price_info_2(_=None):
         return
 
     st.header(f"Historical price data for {crop} for 6 months")
-
     plot_url = st.session_state.get("plot_url", None)
     if plot_url:
         st.image(plot_url, caption=f"Price plot for {crop}", use_column_width=True)
     else:
         st.write("Plot image not found or unavailable.")
-
     back_button()
 
 # --- Good Agricultural Practices Screens ---
@@ -332,22 +326,16 @@ def GAP_1(_=None):
 def GAP_2(type_):
     if type_ == "Conservation_agriculture":
         st.header("Conservation Agriculture")
-        st.write("Conservation Agriculture is a sustainable farming practice that improves soil health and productivity.")
+        text = load_texts("advice_guide_ca.txt")
+        st.write(text)
     elif type_ == "three_principles":
         st.header("Three principles of conservation agriculture")
-        st.write("""
-        - Minimal soil disturbance  
-        - Permanent soil cover  
-        - Diversity in crop rotations  
-        """)
+        text= load_texts("advice_guide_3pgap.txt")
+        st.write(text)
     elif type_ == "SBS_guide":
         st.header("Step by Step guide to implementing Good Agricultural Practices")
-        st.write("""
-        1. Assess your current practices  
-        2. Plan improvements  
-        3. Implement changes gradually  
-        4. Monitor and adjust as needed  
-        """)
+        text = load_texts("advice_guide_sbs.txt")
+        st.write(text)
     back_button()
 
 # --- Notifications Screens ---
@@ -358,8 +346,8 @@ def notifications_1(_=None):
     weather_label = f"Weather Alerts ({'Enabled ' if weather_state else 'Disabled '})"
     st.button(weather_label, key="notif_weather", on_click=partial(toggle_notification, "weather"))
 
-    st.button("Crop Cultivation", on_click=partial(navigate, "notifications_2", "crop_cultivation"))
-    st.button("Price Updates", on_click=partial(navigate, "notifications_2", "price_updates"))
+    st.button("Crop Cultivation", on_click=partial(navigate, "notifications_2", "crop_cultivation")) #time dependent push notifications
+    st.button("Price Updates", on_click=partial(navigate, "notifications_2", "price_updates")) #weekly push notifications
 
     if st.button("To begin"):
         reset()

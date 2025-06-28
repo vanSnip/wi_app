@@ -80,17 +80,17 @@ st.markdown(
       .stButton > button:hover {
         background-color: #0056b3;
       }
-    .back-button > button {
-      background-color: #ff8800 !important;  /* bright orange */
-      margin-top: 1em;
-      width: 100% !important;
-      display: block;
-      box-sizing: border-box;
-      color: white;
-    }
-    .back-button > button:hover {
-      background-color: #cc6f00 !important;  /* darker orange on hover */
-    }
+      .back-button > button {
+        background-color: #ff8800 !important;  /* bright orange */
+        margin-top: 1em;
+        width: 100% !important;
+        display: block;
+        box-sizing: border-box;
+        color: white;
+      }
+      .back-button > button:hover {
+        background-color: #cc6f00 !important;  /* darker orange on hover */
+      }
       body {
         font-family: Arial, sans-serif;
         background-color: #f9f9f9;

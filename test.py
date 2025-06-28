@@ -97,14 +97,6 @@ st.markdown(
         color: #333;
         padding: 2em;
       }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    """
-    <style>
     div[data-testid="stButton"][id="back_button"] button {
         background-color: #ff8800 !important;
         color: white !important;
@@ -117,7 +109,7 @@ st.markdown(
     }
     </style>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
 #--Get forecast graphs--

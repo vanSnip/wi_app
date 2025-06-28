@@ -314,7 +314,7 @@ def price_info_2(_=None):
         st.write("No crop selected.")
         return
 
-    st.header(f"Historical price data for {crop}")
+    st.header(f"Historical price data for {crop} for 6 months")
 
     plot_url = st.session_state.get("plot_url", None)
     if plot_url:

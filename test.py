@@ -168,8 +168,8 @@ def render_welcome(_=None):
     # No back button on welcome screen
 
 def back_button():
-    if st.button("Back to previous step", key="back_button", on_click=go_back):
-        pass
+    st.button("Back to previous step", key="back_button", on_click=go_back):
+        
 
 # --- Version Screens ---
 def version_1(_=None):

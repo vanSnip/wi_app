@@ -66,7 +66,8 @@ def get_texts(filename):
 st.markdown(
     """
     <style>
-      .stButton > button {
+      /* Default buttons */
+      div[data-testid="stButton"] > button {
         background-color: #007bff;
         color: white;
         border-radius: 5px;
@@ -76,37 +77,24 @@ st.markdown(
         width: 100% !important;
         display: block;
         box-sizing: border-box;
+        transition: background-color 0.3s ease;
       }
-      .stButton > button:hover {
+      div[data-testid="stButton"] > button:hover {
         background-color: #0056b3;
       }
-      .back-button > button {
-        background-color: #ff8800 !important;  /* bright orange */
-        margin-top: 1em;
-        width: 100% !important;
-        display: block;
-        box-sizing: border-box;
-        color: white;
-      }
-      .back-button > button:hover {
-        background-color: #cc6f00 !important;  /* darker orange on hover */
-      }
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f9f9f9;
-        color: #333;
-        padding: 2em;
-      }
-    div[data-testid="stButton"][id="back_button"] button {
+
+      /* Back button */
+      div[data-testid="stButton"][id="back_button"] > button {
         background-color: #ff8800 !important;
         color: white !important;
         border-radius: 5px !important;
         width: 100% !important;
         margin-top: 1em !important;
-    }
-    div[data-testid="stButton"][id="back_button"] button:hover {
+        box-sizing: border-box;
+      }
+      div[data-testid="stButton"][id="back_button"] > button:hover {
         background-color: #cc6f00 !important;
-    }
+      }
     </style>
     """,
     unsafe_allow_html=True,

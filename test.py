@@ -321,13 +321,20 @@ def on_crop_click(crop):
 
 def price_info_1(_=None):
     st.header("What crop do you want to know the historical prices of?")
+    version = st.session_state.version
+
+    if version == "data_saving":
+        st.info("Plot images are not available in Data Saving Mode.\nSwitch to another version to view price trends.")
+
     for crop in crops:
-        price = cropPrices.get(crop, None)
-        if price is not None:
-            label = f"{crop} - {price:.2f}"
+        price = cropPrices.get(crop)
+        label = f"{crop} - {price:.2f}" if price is not None else f"{crop} - (no price available)"
+
+        if version == "data_saving":
+            st.write(label)
         else:
-            label = f"{crop} - (no price available)"
-        st.button(label, on_click=partial(on_crop_click, crop))
+            st.button(label, on_click=partial(on_crop_click, crop))
+
     back_button()
     
 def price_info_2(_=None):

@@ -246,7 +246,7 @@ def weather_info(_=None):
         st.image("https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/Nahss%20log.png", use_column_width=True)
         st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
     else:
-        st.write("Weather graphics are not available in this version to save data. Change version for the forecasts")
+        st.info("Weather graphics are not available in this version to save data. Change version for the forecasts")
         
     
     st.button("Get weather advice for crops", on_click=partial(navigate, "weather_crop_advice_1"))
@@ -254,7 +254,6 @@ def weather_info(_=None):
 
 def weather_forecasts_2(period):
     st.header(f"Forecast for {period}")
-    st.write(f"the graph is shown")
     graph_url = get_forecast(period)
     st.image(graph_url, caption=f"Forecast for {period}", use_column_width=True)
     back_button()
@@ -345,7 +344,7 @@ def price_info_2(_=None):
     elif plot_url:
         st.image(plot_url, caption=f"Price plot for {crop}", use_column_width=True)
     else:
-        st.error("Plot image not found or is unavailable at the moment.")
+        st.info("Plot image not found or is unavailable at the moment.")
     back_button()
 
 # --- Good Agricultural Practices Screens ---

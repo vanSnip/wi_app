@@ -6,7 +6,7 @@ import requests
 import ast
 
 #-- import data --
-@st.cache_data(ttl=600)
+
 def load_list_from_github(filename):
     url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/scalability/{filename}"
     response = requests.get(url)

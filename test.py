@@ -102,6 +102,24 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+st.markdown(
+    """
+    <style>
+    div[data-testid="stButton"][id="back_button"] button {
+        background-color: #ff8800 !important;
+        color: white !important;
+        border-radius: 5px !important;
+        width: 100% !important;
+        margin-top: 1em !important;
+    }
+    div[data-testid="stButton"][id="back_button"] button:hover {
+        background-color: #cc6f00 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 #--Get forecast graphs--
 def get_forecast(period):
     # Map each period to its image filename

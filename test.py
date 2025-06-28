@@ -115,10 +115,8 @@ if "history" not in st.session_state:
 if "notificationsEnabled" not in st.session_state:
     st.session_state.notificationsEnabled = {
         "weather": False,
-        "crop_1": False,
-        "crop_2": False,
-        "price_1": False,
-        "price_2": False,
+        **{f"crop_{crop.lower().replace(' ', '_')}": False for crop in crops},
+        **{f"price_{crop.lower().replace(' ', '_')}": False for crop in crops},
     }
 
 if "version" not in st.session_state:
@@ -396,15 +394,18 @@ def notifications_2(type):
     if type == "crop_cultivation":
         st.header("Toggle notifications for crops")
         for crop in crops:
+            crop = crop.lower().replace(" ", "_")
             state = st.session_state.notificationsEnabled[crop]
             label = f"{crop.replace('_', ' ').title()} ({'Enabled' if state else 'Disabled'} )"
             st.button(label, key=f"notif_{crop}", on_click=partial(toggle_notification, crop))
-    elif type == "price_updates":
+    elif type_ == "price_updates":
         st.header("What crop price updates would you like to receive?")
         for crop in crops:
-            state = st.session_state.notificationsEnabled[price]
-            label = f"{price.replace('_', ' ').title()} ({'Enabled' if state else 'Disabled'})"
-            st.button(label, key=f"notif_{price}", on_click=partial(toggle_notification, price))
+            crop_key = crop.lower().replace(" ", "_")
+            price_key = f"price_{crop_key}"
+            state = st.session_state.notificationsEnabled.get(price_key, False)
+            label = f"{crop} Price Updates ({'Enabled' if state else 'Disabled'})"
+            st.button(label, key=f"notif_{price_key}", on_click=partial(toggle_notification, price_key))
     back_button()
 
 def toggle_crop_alerts(crop):

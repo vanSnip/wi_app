@@ -339,10 +339,13 @@ def price_info_2(_=None):
 
     st.header(f"Historical price data for {crop} for 6 months")
     plot_url = st.session_state.get("plot_url", None)
-    if plot_url:
+    version = st.session_state.version
+    if version == "data_saving":
+        st.info("Plot image is not available in the Data Saving Version. Please switch to another version to view the price trends.")
+    elif plot_url:
         st.image(plot_url, caption=f"Price plot for {crop}", use_column_width=True)
     else:
-        st.write("Plot image not found or unavailable.")
+        st.error("Plot image not found or is unavailable at the moment.")
     back_button()
 
 # --- Good Agricultural Practices Screens ---

@@ -13,7 +13,7 @@ def load_list_from_github(filename):
     if response.status_code == 200:
         return ast.literal_eval(response.text)  # Safe parsing of list string
     else:
-        return []
+        return 
 
 def load_crop_prices():
     url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/crop_prices.csv"
@@ -38,14 +38,13 @@ cropPrices = load_crop_prices()
 
 #-- import text --
 def get_texts(filename):
-    url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/texts/{filename}"
-    
+    url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/texts/{filename}"
     response = requests.get(url)
     if response.status_code == 200:
-        return ast.literal_eval(response.text)  # Safe parsing of list string
+        return response.text
     else:
-        return []
-#We fetch text in dict form {crop_info_class; text} 
+        return "Text not available."
+#We fetch text in dict form {crop_info_class; text} (Later stage, now separate .txt files)
 
 # --- CSS styling ---
 st.markdown(
@@ -182,7 +181,6 @@ def set_location(_=None):
 
     for city in cities:
         st.button(city, on_click=partial(set_location_state, city))
-
     back_button()
 
 def weather_forecast_period(_=None):
@@ -201,7 +199,6 @@ def weather_forecast_period(_=None):
 
     for p in periods:
         st.button(f"{p} month{'s' if p > 1 else ''}", on_click=partial(select_period, p))
-
     back_button()
 
 def weather_forecast_graph(_=None):
@@ -251,7 +248,7 @@ def weather_crop_advice_3(crop):
 
 # --- Crop Advice Screens ---
 def crop_advice_1(_=None):
-    st.header("For what crop do you need advice?")
+    st.header("What type of advice do you need?")
     st.button("Cultivation", on_click=partial(navigate, "crop_advice_2", "cultivation"))
     st.button("Pest and diseases", on_click=partial(navigate, "crop_advice_2", "pest_and_diseases"))
     back_button()
@@ -263,7 +260,7 @@ def crop_advice_2(type_):
             crop_key = crop.lower().replace(" ", "_")
             st.button(crop, on_click=partial(navigate, "pnd_1", crop_key))
     else:
-        st.header("For what crop do you need advice?")
+        st.header("For what crop do you need cultivation advice?")
         for crop in crops:
             crop_key = crop.lower().replace(" ", "_")
             st.button(crop, on_click=partial(navigate, "crop_cultivation_adv", crop_key))
@@ -276,7 +273,9 @@ def pnd_1(crop):
 
 def crop_cultivation_adv(crop):
     st.header(f"Cultivation advice for {crop}")
-    st.write("Insert cultivation advice here...")
+    temp_name = f"advice_cul_{crop}"
+    text = get_texts(temp_name)
+    st.write(text)
     back_button()
 
 # --- Price Info Screens ---

@@ -398,7 +398,7 @@ def notifications_2(type_):
             crop_key = f"crop_{crop_name}"
             state = st.session_state.notificationsEnabled.get(crop_key, False)
             label = f"{crop.replace('_', ' ').title()} cultivation updates ({'Enabled' if state else 'Disabled'} )"
-            st.button(label, key=f"notif_{crop}", on_click=partial(toggle_notification, crop))
+            st.button(label, key=f"notif_{crop}", on_click=partial(toggle_notification, crop_key))
     elif type_ == "price_updates":
         st.header("What crop price updates would you like to receive?")
         for crop in crops:

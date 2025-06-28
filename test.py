@@ -53,7 +53,7 @@ todays_climate_data = load_todays_climate_data()
 cropPrices = load_crop_prices()
 
 #-- import text --
-def get_texts(filename):
+def load_texts(filename):
     url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/texts/{filename}"
     response = requests.get(url)
     if response.status_code == 200:
@@ -292,14 +292,14 @@ def crop_advice_2(type_):
 def pnd_1(crop):
     st.header(f"Pest and Disease advice for {crop}")
     temp_name = f"advice_pnd_{crop}.txt"
-    text = get_texts(temp_name)
+    text = load_texts(temp_name)
     st.write(text)
     back_button()
 
 def crop_cultivation_adv(crop):
     st.header(f"Cultivation advice for {crop}")
     temp_name = f"advice_cul_{crop}.txt"
-    text = get_texts(temp_name)
+    text = load_texts(temp_name)
     st.write(text)
     back_button()
 

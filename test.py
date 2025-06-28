@@ -28,11 +28,28 @@ def load_crop_prices():
     df["crop"] = df["crop"].str.strip()
 
     return dict(zip(df["crop"], df["price"]))
+    
+def load_todays_climate_data():
+    url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/climate_data/weather_data_today.csv"
 
+    df = pd.read_csv(url, sep=',')
+    
+    # Clean column names
+    df.columns = df.columns.str.strip()
+
+    # Strip whitespace in key column
+    df.iloc[:, 0] = df.iloc[:, 0].astype(str).str.strip()
+
+    # Convert to dictionary: key = first column, value = list of the rest
+    data_dict = df.set_index(df.columns[0]).apply(lambda row: row.tolist(), axis=1).to_dict()
+
+    return data_dict
+    
 crops = load_list_from_github("selected_crops.txt")   
 cities = load_list_from_github("selected_cities.txt")
 periods = load_list_from_github("selected_periods.txt")    
 
+todays_climate_data = load_todays_climate_data()
 cropPrices = load_crop_prices()
 
 #-- import text --
@@ -210,15 +227,27 @@ def weather_forecast_graph(_=None):
 # --- Weather Info Screens ---
 def weather_info(_=None):
     st.header("Weather Information")
+    
+    if loc in todays_climate_data:
+        temp, precip = todays_climate_data[loc]
+        st.write(f"**Location:** {loc}")
+        st.write(f"**Temperature:** {temp} °C")
+        st.write(f"**Precipitation:** {precip} mm")
+    else:
+        st.warning(f"No weather data found for **{loc}**.")
     version = st.session_state.version
+
+    
     if version == "performance":
         st.image("https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/Nahss%20log.png", use_column_width=True)
+        st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
     elif version == "extension":
         st.image("https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/Nahss%20log.png", use_column_width=True)
+        st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
     else:
-        st.write("Weather graphics are not available in this version to save data.")
-
-    st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
+        st.write("Weather graphics are not available in this version to save data. Change version for the forecasts")
+        
+    
     st.button("Get weather advice for crops", on_click=partial(navigate, "weather_crop_advice_1"))
     back_button()
 

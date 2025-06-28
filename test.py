@@ -394,7 +394,6 @@ def notifications_2(type_):
     if type_ == "crop_cultivation":
         st.header("Toggle notifications for crops")
         for crop in crops:
-            crop = crop.lower().replace(" ", "_")
             state = st.session_state.notificationsEnabled[crop]
             label = f"{crop.replace('_', ' ').title()} ({'Enabled' if state else 'Disabled'} )"
             st.button(label, key=f"notif_{crop}", on_click=partial(toggle_notification, crop))

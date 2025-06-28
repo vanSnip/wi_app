@@ -283,6 +283,20 @@ def crop_cultivation_adv(crop):
     back_button()
 
 # --- Price Info Screens ---
+def on_crop_click(crop):
+    # Build the filename and GitHub URL for the crop plot
+    filename = f"price_plot_{crop.replace(' ', '_').lower()}.png"
+    github_url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/{filename}"
+
+    # Check if the image exists on GitHub
+    if requests.get(github_url).status_code == 200:
+        st.session_state.plot_url = github_url
+    else:
+        st.session_state.plot_url = None
+
+    st.session_state.selected_crop = crop
+    navigate("price_info_2")
+
 def price_info_1(_=None):
     st.header("What crop do you want to know the historical prices of?")
     for crop in crops:
@@ -291,12 +305,23 @@ def price_info_1(_=None):
             label = f"{crop} - {price:.2f}"
         else:
             label = f"{crop} - (no price available)"
-        st.button(label, on_click=partial(navigate, "price_info_2", crop))
+        st.button(label, on_click=partial(on_crop_click, crop))
     back_button()
+    
+def price_info_2(_=None):
+    crop = st.session_state.get("selected_crop", None)
+    if not crop:
+        st.write("No crop selected.")
+        return
 
-def price_info_2(crop):
     st.header(f"Historical price data for {crop}")
-    st.write("Insert table and location info here...")
+
+    plot_url = st.session_state.get("plot_url", None)
+    if plot_url:
+        st.image(plot_url, caption=f"Price plot for {crop}", use_column_width=True)
+    else:
+        st.write("Plot image not found or unavailable.")
+
     back_button()
 
 # --- Good Agricultural Practices Screens ---

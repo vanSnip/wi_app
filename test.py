@@ -268,12 +268,14 @@ def crop_advice_2(type_):
 
 def pnd_1(crop):
     st.header(f"Pest and Disease advice for {crop}")
-    st.write("Insert pest and disease advice here...")
+    temp_name = f"advice_pnd_{crop}.txt"
+    text = get_texts(temp_name)
+    st.write(text)
     back_button()
 
 def crop_cultivation_adv(crop):
     st.header(f"Cultivation advice for {crop}")
-    temp_name = f"advice_cul_{crop}"
+    temp_name = f"advice_cul_{crop}.txt"
     text = get_texts(temp_name)
     st.write(text)
     back_button()

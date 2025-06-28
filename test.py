@@ -47,7 +47,6 @@ def get_texts(filename):
         return []
 #We fetch text in dict form {crop_info_class; text} 
 
-
 # --- CSS styling ---
 st.markdown(
     """
@@ -158,7 +157,6 @@ def back_button():
     if st.button("Back to previous step", key="back_button", on_click=go_back):
         pass
 
-
 # --- Version Screens ---
 def version_1(_=None):
     st.header(f"Select the version you want (current version: {st.session_state.version_show})")
@@ -173,8 +171,8 @@ def version_1(_=None):
     st.button("Extension Officers Version", on_click=partial(set_version, "extension", "Extension Officers Version"))
     st.button("Choose Location", on_click=partial(navigate, "set_location"))
     back_button()
+    
 #-- Set Location --
-
 def set_location(_=None):
     st.header(f"Select your location (your current location is: {st.session_state.loc})")
 
@@ -205,7 +203,6 @@ def weather_forecast_period(_=None):
         st.button(f"{p} month{'s' if p > 1 else ''}", on_click=partial(select_period, p))
 
     back_button()
-
 
 def weather_forecast_graph(_=None):
     city = st.session_state.loc

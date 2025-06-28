@@ -168,7 +168,7 @@ def render_welcome(_=None):
     # No back button on welcome screen
 
 def back_button():
-    st.button("Back to previous step", key="back_button", on_click=go_back):
+    st.button("Back to previous step", key="back_button", on_click=go_back)
         
 
 # --- Version Screens ---

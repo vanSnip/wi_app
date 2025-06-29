@@ -271,6 +271,10 @@ def weather_crop_advice_3(crop):
 # --- Crop Advice Screens ---
 def crop_advice_1(_=None):
     st.header("What type of advice do you need?")
+    st.write("""**General Useful Tips:**
+        - Ask your local farming officer for help.
+        - Try machines if possible — they save time and labor.
+    """)
     st.button("Cultivation", on_click=partial(navigate, "crop_advice_2", "cultivation"))
     st.button("Pest and diseases", on_click=partial(navigate, "crop_advice_2", "pest_and_diseases"))
     back_button()

@@ -274,6 +274,10 @@ def crop_advice_1(_=None):
     st.write("""**General Useful Tips:**
         - Ask your local farming officer for help.
         - Try machines if possible — they save time and labor.
+        - Try to follow the planting calendar for your area.
+        - Too much water or no water can hurt the crop.
+        - Too much fertilizer causes weak plants.
+        - Use fertiliser in parts — not all at once.
     """)
     st.button("Cultivation", on_click=partial(navigate, "crop_advice_2", "cultivation"))
     st.button("Pest and diseases", on_click=partial(navigate, "crop_advice_2", "pest_and_diseases"))

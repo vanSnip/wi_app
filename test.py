@@ -292,14 +292,14 @@ def pnd_1(crop):
     st.header(f"Pest and Disease advice for {crop}")
     temp_name = f"advice_pnd_{crop}.txt"
     text = load_texts(temp_name)
-    st.markdown(text)
+    st.text(text)
     back_button()
 
 def crop_cultivation_adv(crop):
     st.header(f"Cultivation advice for {crop}")
     temp_name = f"advice_cul_{crop}.txt"
     text = load_texts(temp_name)
-    st.markdown(text)
+    st.text(text)
     back_button()
 
 # --- Price Info Screens ---
@@ -364,15 +364,15 @@ def GAP_2(type_):
     if type_ == "Conservation_agriculture":
         st.header("Conservation Agriculture")
         text = load_texts("advice_guide_ca.txt")
-        st.markdown(text)
+        st.text(text)
     elif type_ == "three_principles":
         st.header("Three principles of conservation agriculture")
         text= load_texts("advice_guide_3pgap.txt")
-        st.markdown(text)
+        st.text(text)
     elif type_ == "SBS_guide":
         st.header("Step by Step guide to implementing Good Agricultural Practices")
         text = load_texts("advice_guide_sbs.txt")
-        st.markdown(text)
+        st.text(text)
     back_button()
 
 # --- Notifications Screens ---

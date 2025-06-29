@@ -218,7 +218,7 @@ def weather_forecast_graph(_=None):
     city = st.session_state.loc
     months = st.session_state.selected_period
     plot_url = st.session_state.plot_url
-    st.header(f"Weather in {city} - Last {months} month{'s' if months > 1 else ''}")
+    st.header(f"Weather in {city} - Last {months} week{'s' if months > 1 else ''}")#now weeks
     st.image(plot_url, caption=f"Temperature in {city}", use_column_width=True)
     back_button()
 

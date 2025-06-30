@@ -211,7 +211,7 @@ def weather_forecast_period(_=None):
         navigate("weather_forecast_graph")
 
     for p in periods:
-        st.button(f"{p} month{'s' if p > 1 else ''}", on_click=partial(select_period, p))
+        st.button(f"{p} week{'s' if p > 1 else ''}", on_click=partial(select_period, p)) #now weeks
     back_button()
 
 def weather_forecast_graph(_=None):

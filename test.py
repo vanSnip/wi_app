@@ -451,6 +451,7 @@ screen_funcs = {
     "price_info_2": price_info_2,
     "GAP_1": GAP_1,
     "GAP_2": GAP_2,
+    "alt_tech": alt_tech:
     "notifications_1": notifications_1,
     "notifications_2": notifications_2,
     "set_location": set_location,  

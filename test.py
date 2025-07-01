@@ -364,8 +364,7 @@ def price_info_2(_=None):
 def GAP_1(_=None):
     st.header("What type of Good Agricultural Practices do you want to know about?")
     st.button("Conservation Agriculture", on_click=partial(navigate, "GAP_2", "Conservation_agriculture"))
-    st.button("3 principles of conservation agriculture", on_click=partial(navigate, "GAP_2", "three_principles"))
-    st.button("Step by Step guide", on_click=partial(navigate, "GAP_2", "SBS_guide"))
+    st.button("Filler (test)")
     back_button()
 
 def GAP_2(type_):
@@ -373,6 +372,8 @@ def GAP_2(type_):
         st.header("Conservation Agriculture")
         text = load_texts("advice_guide_ca.txt")
         st.text(text)
+        st.button("3 principles of conservation agriculture", on_click=partial(navigate, "GAP_2", "three_principles"))
+        st.button("Step by Step guide", on_click=partial(navigate, "GAP_2", "SBS_guide"))
     elif type_ == "three_principles":
         st.header("Three principles of conservation agriculture")
         text= load_texts("advice_guide_3pgap.txt")

@@ -364,7 +364,7 @@ def price_info_2(_=None):
 def GAP_1(_=None):
     st.header("What new farming technique would you like to have explained")
     st.button("Conservation Agriculture", on_click=partial(navigate, "GAP_2", "Conservation_agriculture"))
-    st.button("Alternative Farming Techniques", on_click=partial(navigate, "alt_tech", "aquatic"))
+    st.button("Aquatic Rice Farming", on_click=partial(navigate, "alt_tech", "aquatic"))
     back_button()
 
 def GAP_2(type_):

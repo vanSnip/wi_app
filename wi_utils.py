@@ -277,7 +277,6 @@ def fetch_and_upload(city, months):
     return url
 
 
-
 def simulate_and_upload_prices(crop, period=6, end_date=datetime.today(), initial_price=np.random.lognormal(mean=3, sigma=0.1, size=1)):
     """
     Simulate daily prices over the given date range with an AR(1)-like process:

@@ -358,3 +358,4 @@ def text_upload(crop, type, text):
 
     if not os.listdir(folder):
         os.rmdir(folder)
+

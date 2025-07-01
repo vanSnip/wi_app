@@ -32,6 +32,23 @@ GITHUB_BRANCH = os.getenv("GITHUB_BRANCH")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 api_key = os.getenv("API_KEY")
 
+# Column names from GeoNames documentation
+columns = [
+    "geonameid", "name", "asciiname", "alternatenames",
+    "latitude", "longitude", "feature_class", "feature_code",
+    "country_code", "cc2", "admin1_code", "admin2_code",
+    "admin3_code", "admin4_code", "population", "elevation",
+    "dem", "timezone", "modification_date"
+]
+
+# Load file
+coord_data = pd.read_csv("text_data/VN.txt", sep="\t", names=columns, dtype=str)
+
+# Convert lat/lon and population to numeric
+coord_data["latitude"] = pd.to_numeric(coord_data["latitude"])
+coord_data["longitude"] = pd.to_numeric(coord_data["longitude"])
+coord_data["population"] = pd.to_numeric(coord_data["population"])
+
 def get_nasa_power_weather(lat, lon, months=6):
 
     end_date = datetime.today()
@@ -258,3 +275,5 @@ def fetch_and_upload(city, months):
     os.remove(local_path)
 
     return url
+
+

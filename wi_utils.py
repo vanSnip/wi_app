@@ -277,3 +277,85 @@ def fetch_and_upload(city, months):
     return url
 
 
+
+def simulate_and_upload_prices(crop, period=6, end_date=datetime.today(), initial_price=np.random.lognormal(mean=3, sigma=0.1, size=1)):
+    """
+    Simulate daily prices over the given date range with an AR(1)-like process:
+    price_t = price_{t-1} + Normal(0,1)
+    Save to CSV, upload to GitHub, then remove local file.
+    
+    crop: str, crop name
+    start_date: datetime, simulation start
+    end_date: datetime, simulation end
+    initial_price: float, starting price at start_date
+    upload_func: function, handles uploading file to GitHub, takes (local_path, remote_path)
+    """
+    start_date = end_date - relativedelta(months=period)
+
+    # Create daily date range
+    dates = pd.date_range(start=start_date, end=end_date, freq='D')
+    n_days = len(dates)
+    
+    # Simulate daily price changes (normal noise)
+    noise = np.random.normal(loc=0, scale=0.1, size=n_days)
+    
+    # Create price series as cumulative sum of noise starting from initial price
+    prices = initial_price + np.cumsum(noise)
+    
+    # Make sure prices are positive (optional)
+    prices = np.clip(prices, a_min=0.01, a_max=None)
+    
+    # Plot prices
+    plt.figure(figsize=(10, 6))
+    plt.plot(dates, prices, label=f"{crop} Price")
+    plt.title(f"Simulated Daily Prices for {crop} ({period} months)")
+    plt.xlabel("Date")
+    plt.ylabel("Price")
+    plt.legend()
+    plt.grid(True)
+
+    # Save plot as PNG
+    folder = "price_plots"
+    os.makedirs(folder, exist_ok=True)
+    plot_file = f"price_plot_{crop.lower().replace(' ', '_')}.png"
+    plot_path = os.path.join(folder, plot_file)
+    plt.savefig(plot_path)
+    plt.close()
+
+    # Upload plot image to GitHub
+    upload_to_github(plot_path, f"price_data/{plot_file}")
+
+    # Clean up local file
+    os.remove(plot_path)
+    if not os.listdir(folder):
+        os.rmdir(folder)
+
+    print(f"Plot uploaded for {crop}")
+
+def text_upload(crop, type, text):
+    """
+    Uploads text data to GitHub in the specified format.
+    
+    crop: str, crop name
+    type: str, type of text data (e.g., 'description', 'instructions')
+    text: str, content to upload
+
+    format:
+    advice_{type}_{crop}.txt
+    """
+    folder = "text_data"
+    os.makedirs(folder, exist_ok=True)
+    
+    filename = f"advice_{type}_{crop.lower().replace(' ', '_')}.txt"
+    file_path = os.path.join(folder, filename)
+    
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(text)
+    
+    upload_to_github(file_path, f"texts/{filename}")
+    
+    # Clean up local file
+    os.remove(file_path)
+
+    if not os.listdir(folder):
+        os.rmdir(folder)

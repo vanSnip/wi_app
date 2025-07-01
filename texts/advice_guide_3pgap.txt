@@ -24,3 +24,5 @@ Advantages:
 Improves the soil fertility and structure: 
 Reduces the risk of pests and diseases: 
 Increases the water use: 
+
+Disclaimer: These materials have been based on the materials commissioned by FAO Lesotho and the Ministry of Agriculture and Food Security with financial support from the European Commission Humaitarian Aid and Civil Protection Directorate (ECHO) and OFDA in 2012. These materials were developed in coordination with, and endorsed by, the Lesotho Conservation Agriculture National Task Force (LCANTF). Furthermore, the information is processed with the help of a LLM Github Copilot, which is not a human expert. 

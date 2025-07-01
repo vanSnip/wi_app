@@ -1,1 +1,5 @@
-SBS guide text
+Step 1
+Field Lay Out
+All crop rows should be 65 cm apart from each other, and the distance between the crops in each row should be 75 cm.
+If the area is dry, increase the row spacing to 78 cm and crop spacing to 90 cm.
+To do this effectively, use a piece of rope for the measurements.

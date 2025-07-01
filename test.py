@@ -272,12 +272,11 @@ def weather_crop_advice_3(crop):
 def crop_advice_1(_=None):
     st.header("What type of advice do you need?")
     st.write("""**General Useful Tips:** \n
-        - Ask your local farming officer for help. \n
         - Try machines if possible — they save time and labor. \n
         - Try to follow the planting calendar for your area. \n
         - Too much water or no water can hurt the crop. \n
-        - Too much fertilizer causes weak plants. \n
-        - Use fertiliser in parts — not all at once. \n
+        - Too much fertiliser causes weak plants. Use fertiliser in parts.
+        - Ask your local farming officer for help. \n
     """)
     st.button("Cultivation", on_click=partial(navigate, "crop_advice_2", "cultivation"))
     st.button("Pest and diseases", on_click=partial(navigate, "crop_advice_2", "pest_and_diseases"))

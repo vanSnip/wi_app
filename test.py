@@ -387,7 +387,7 @@ def GAP_2(type_):
 def alt_tech(type_):
     if type_ == "aquatic":
         st.header("Aquatic Rice Farming")
-        text = load_texts("advice_guide_RiceAquaculture.txt")
+        text = load_texts("advice_guide_riceaquaculture.txt")
         st.text(text)
     back_button()
 

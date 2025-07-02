@@ -1,4 +1,4 @@
 crop,price
-Rice,0.37925
-Maize,0.6620722012787451
-Sugar cane,0.3428404562
+Rice,<function fetch_vietnam_rice_price at 0x17def4d60>
+Maize,<function fetch_vietnam_maize_price at 0x17def4f40>
+Sugar cane,<function fetch_sugar_price at 0x17def4e00>

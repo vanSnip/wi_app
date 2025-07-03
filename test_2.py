@@ -264,9 +264,6 @@ def version_1(_=None):
 def set_location(_=None):
     st.header(f"Select your location (your current location is: {st.session_state.loc})")
 
-    def set_location_state(loc):
-        st.session_state.loc = loc
-        go_back()
     input_name = st.text_input("Enter city name:")
 
     if st.button("Set Location"):

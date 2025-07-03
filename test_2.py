@@ -11,7 +11,14 @@ user = "vanSnip"  # GitHub username
 repo = "wi_app"  # GitHub repository name
 repo_url = f"https://raw.githubusercontent.com/{user}/{repo}/main"
 
-#-- Define General functions --
+#-- deifne auxiliary functions --
+def load_csv(filename):
+    url = f"{repo_url}/csv_files/{filename}"
+
+    df = pd.read_csv(url, sep=',')
+    
+    return df
+
 def load_list_from_github(filename):
     url = f"{repo_url}/scalability/{filename}"
     response = requests.get(url)
@@ -20,6 +27,29 @@ def load_list_from_github(filename):
     else:
         return 
 
+#-- initialise datasets --
+filtered_cities = load_csv("filtered_cities.csv")
+columns = [
+    "geonameid", "name", "asciiname", "alternatenames",
+    "latitude", "longitude", "feature_class", "feature_code",
+    "country_code", "cc2", "admin1_code", "admin2_code",
+    "admin3_code", "admin4_code", "population", "elevation",
+    "dem", "timezone", "modification_date"
+]
+# Load file
+crops = load_list_from_github("selected_crops.txt")   
+periods = load_list_from_github("selected_periods.txt") 
+
+viet_coord_data = pd.read_csv("text_data/VN.txt", sep="\t", names=columns, dtype=str)
+filtered_cities["latitude"] = pd.to_numeric(filtered_cities["latitude"], errors='coerce')
+filtered_cities["longitude"] = pd.to_numeric(filtered_cities["longitude"], errors='coerce')
+
+viet_coord_data["latitude"] = pd.to_numeric(viet_coord_data["latitude"], errors='coerce')
+viet_coord_data["longitude"] = pd.to_numeric(viet_coord_data["longitude"], errors='coerce')
+filtered_cities = filtered_cities.dropna(subset=["latitude", "longitude"])
+viet_coord_data = viet_coord_data.dropna(subset=["latitude", "longitude"])
+
+#-- Define General functions --
 def load_crop_prices():
     url = f"{repo_url}/price_data/crop_prices.csv"
     df = pd.read_csv(url, sep=',')
@@ -51,12 +81,7 @@ def load_todays_climate_data():
 
     return data_dict
 
-def load_csv(filename):
-    url = f"{repo_url}/csv_files/{filename}"
 
-    df = pd.read_csv(url, sep=',')
-    
-    return df
 #-- import text --
 def load_texts(filename):
     url = f"{repo_url}/texts/{filename}"
@@ -124,27 +149,7 @@ def get_forecast(period):
     url = f"{repo_url}/graphs/{filename}"
     return url
 
-#-- initialise data --
-filtered_cities = load_csv("filtered_cities.csv")
-columns = [
-    "geonameid", "name", "asciiname", "alternatenames",
-    "latitude", "longitude", "feature_class", "feature_code",
-    "country_code", "cc2", "admin1_code", "admin2_code",
-    "admin3_code", "admin4_code", "population", "elevation",
-    "dem", "timezone", "modification_date"
-]
-# Load file
-crops = load_list_from_github("selected_crops.txt")   
-periods = load_list_from_github("selected_periods.txt") 
-viet_coord_data = pd.read_csv("text_data/VN.txt", sep="\t", names=columns, dtype=str)
 
-filtered_cities["latitude"] = pd.to_numeric(filtered_cities["latitude"], errors='coerce')
-filtered_cities["longitude"] = pd.to_numeric(filtered_cities["longitude"], errors='coerce')
-
-viet_coord_data["latitude"] = pd.to_numeric(viet_coord_data["latitude"], errors='coerce')
-viet_coord_data["longitude"] = pd.to_numeric(viet_coord_data["longitude"], errors='coerce')
-filtered_cities = filtered_cities.dropna(subset=["latitude", "longitude"])
-viet_coord_data = viet_coord_data.dropna(subset=["latitude", "longitude"])
 
 #-- import todays climate data --
 todays_climate_data = load_todays_climate_data()

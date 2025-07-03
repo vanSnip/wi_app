@@ -303,6 +303,7 @@ def pnd_1(crop):
     text = load_texts(temp_name)
     st.text(text)
     back_button()
+    st.button("Back to the main menu", on_click=partial(navigate, "welcome"))
 
 def crop_cultivation_adv(crop):
     st.header(f"Cultivation advice for {crop}")
@@ -310,6 +311,7 @@ def crop_cultivation_adv(crop):
     text = load_texts(temp_name)
     st.text(text)
     back_button()
+    st.button("Back to the main menu", on_click=partial(navigate, "welcome"))
 
 # --- Price Info Screens ---
 def price_info_1(_=None):
@@ -358,7 +360,7 @@ def alt_tech(type_):
 
 # --- Notifications Screens ---
 def notifications_1(_=None):
-    st.header("What type of notifications would you like to receive?")
+    st.header("What type of notifications would you like to receive? Click to switch them on or off.")
 
     weather_state = st.session_state.notificationsEnabled["weather"]
     weather_label = f"Weather Alerts ({'Enabled ' if weather_state else 'Disabled '})"

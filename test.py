@@ -282,7 +282,7 @@ def crop_advice_1(_=None):
     """)
     st.button("Cultivation", on_click=partial(navigate, "crop_advice_2", "cultivation"))
     st.button("Pest and diseases", on_click=partial(navigate, "crop_advice_2", "pest_and_diseases"))
-    back_button()
+    st.button("Back to the main menu", on_click=partial(navigate, "welcome"))
 
 def crop_advice_2(type_):
     if type_ == "pest_and_diseases":
@@ -326,7 +326,7 @@ def GAP_1(_=None):
     st.header("What alternative technique would you like to have explained")
     st.button("Conservation Agriculture", on_click=partial(navigate, "GAP_2", "Conservation_agriculture"))
     st.button("Aquatic Rice Farming", on_click=partial(navigate, "alt_tech", "aquatic"))
-    back_button()
+    st.button("Back to the main menu", on_click=partial(navigate, "welcome"))
 
 def GAP_2(type_):
     if type_ == "Conservation_agriculture":

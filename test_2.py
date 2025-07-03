@@ -273,7 +273,7 @@ def set_location(_=None):
     # Display header showing current location from session state
     st.header(f"Select your location (your current location is: {st.session_state.loc})")
 
-    with st.form(key="location_form"):
+    with st.form(key="location_form"): # I do not prefer the form format, but for now, it is neat. 
         input_name = st.text_input("Enter city name:")
         submit = st.form_submit_button("Set Location")
 
@@ -281,7 +281,7 @@ def set_location(_=None):
         new_loc, message = search_city(input_name)
         if new_loc is not None:
             st.session_state.loc = new_loc
-            st.success(f"Location updated to {new_loc}")
+            st.write(message)
         else:
             st.warning(message)
     

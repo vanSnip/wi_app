@@ -161,7 +161,7 @@ def render_welcome(_=None):
     st.button("Weather information", on_click=partial(navigate, "weather_info"))
     st.button("Crop Advice", on_click=partial(navigate, "crop_advice_1"))
     st.button("Crop Prices", on_click=partial(navigate, "price_info_1"))
-    st.button("New Farming Techniques", on_click=partial(navigate, "GAP_1"))
+    st.button("Alternative Techniques", on_click=partial(navigate, "GAP_1"))
     st.button("Notifications", on_click=partial(navigate, "notifications_1"))
     st.button("Version and Locations", on_click=partial(navigate, "version_1"))
     # No back button on welcome screen
@@ -321,7 +321,7 @@ def price_info_1(_=None):
 
 # --- Good Agricultural Practices Screens ---
 def GAP_1(_=None):
-    st.header("What new farming technique would you like to have explained")
+    st.header("What alternative technique would you like to have explained")
     st.button("Conservation Agriculture", on_click=partial(navigate, "GAP_2", "Conservation_agriculture"))
     st.button("Aquatic Rice Farming", on_click=partial(navigate, "alt_tech", "aquatic"))
     back_button()
@@ -337,10 +337,12 @@ def GAP_2(type_):
         st.header("Three principles of conservation agriculture")
         text= load_texts("advice_guide_3pgap.txt")
         st.text(text)
+        st.button("Step by Step guide", on_click=partial(navigate, "GAP_2", "SBS_guide"))
     elif type_ == "SBS_guide":
         st.header("Step by Step guide to implementing Good Agricultural Practices")
         text = load_texts("advice_guide_sbs.txt")
         st.text(text)
+        st.button("Three principles of conservation agriculture", on_click=partial(navigate, "GAP_2", "three_principles"))
     back_button()
     
 def alt_tech(type_):

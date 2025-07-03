@@ -58,7 +58,15 @@ def load_csv(filename):
     return df
 
 filtered_cities = load_csv("filtered_cities.csv")
-viet_coord_data = load_csv("viet_coord_data.csv")
+columns = [
+    "geonameid", "name", "asciiname", "alternatenames",
+    "latitude", "longitude", "feature_class", "feature_code",
+    "country_code", "cc2", "admin1_code", "admin2_code",
+    "admin3_code", "admin4_code", "population", "elevation",
+    "dem", "timezone", "modification_date"
+]
+# Load file
+viet_coord_data = pd.read_csv("text_data/VN.txt", sep="\t", names=columns, dtype=str)
 
 
 todays_climate_data = load_todays_climate_data()

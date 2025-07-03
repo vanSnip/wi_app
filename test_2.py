@@ -52,19 +52,16 @@ viet_coord_data = viet_coord_data.dropna(subset=["latitude", "longitude"])
 #-- Define General functions --
 def load_crop_prices():
     url = f"{repo_url}/price_data/crop_prices.csv"
-    df = pd.read_csv(url, sep=',')
+    try:
+        df = pd.read_csv(url, sep=',')
+        df.columns = df.columns.str.strip()
+        df.dropna(subset=["crop", "price"], inplace=True)
+        df["crop"] = df["crop"].str.strip()
+        return dict(zip(df["crop"], df["price"]))
+    except Exception as e:
+        st.warning(f"Failed to load crop prices: {e}")
+        return {}
 
-    # Clean column names
-    df.columns = df.columns.str.strip()
-
-    # Drop rows with missing values
-    df.dropna(subset=["crop", "price"], inplace=True)
-
-    # Strip whitespace from crop names
-    df["crop"] = df["crop"].str.strip()
-
-    return dict(zip(df["crop"], df["price"]))
-    
 def load_todays_climate_data():
     url = f"{repo_url}/climate_data_2/weather_data_today.csv"
 

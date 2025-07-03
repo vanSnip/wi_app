@@ -68,7 +68,15 @@ columns = [
 # Load file
 viet_coord_data = pd.read_csv("text_data/VN.txt", sep="\t", names=columns, dtype=str)
 
+filtered_cities["latitude"] = pd.to_numeric(filtered_cities["latitude"], errors='coerce')
+filtered_cities["longitude"] = pd.to_numeric(filtered_cities["longitude"], errors='coerce')
 
+viet_coord_data["latitude"] = pd.to_numeric(viet_coord_data["latitude"], errors='coerce')
+viet_coord_data["longitude"] = pd.to_numeric(viet_coord_data["longitude"], errors='coerce')
+filtered_cities = filtered_cities.dropna(subset=["latitude", "longitude"])
+viet_coord_data = viet_coord_data.dropna(subset=["latitude", "longitude"])
+
+#-- import todays climate data --
 todays_climate_data = load_todays_climate_data()
 cropPrices = load_crop_prices()
 

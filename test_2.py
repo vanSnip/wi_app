@@ -36,18 +36,7 @@ columns = [
     "admin3_code", "admin4_code", "population", "elevation",
     "dem", "timezone", "modification_date"
 ]
-# Load file
-crops = load_list_from_github("selected_crops.txt")   
-periods = load_list_from_github("selected_periods.txt") 
 
-viet_coord_data = pd.read_csv("text_data/VN.txt", sep="\t", names=columns, dtype=str)
-filtered_cities["latitude"] = pd.to_numeric(filtered_cities["latitude"], errors='coerce')
-filtered_cities["longitude"] = pd.to_numeric(filtered_cities["longitude"], errors='coerce')
-
-viet_coord_data["latitude"] = pd.to_numeric(viet_coord_data["latitude"], errors='coerce')
-viet_coord_data["longitude"] = pd.to_numeric(viet_coord_data["longitude"], errors='coerce')
-filtered_cities = filtered_cities.dropna(subset=["latitude", "longitude"])
-viet_coord_data = viet_coord_data.dropna(subset=["latitude", "longitude"])
 
 #-- Define General functions --
 def load_crop_prices():
@@ -87,6 +76,20 @@ def load_texts(filename):
         return response.text
     else:
         return "Text not available."
+
+
+# Load file
+crops = load_list_from_github("selected_crops.txt")   
+periods = load_list_from_github("selected_periods.txt") 
+
+viet_coord_data = pd.read_csv("text_data/VN.txt", sep="\t", names=columns, dtype=str)
+filtered_cities["latitude"] = pd.to_numeric(filtered_cities["latitude"], errors='coerce')
+filtered_cities["longitude"] = pd.to_numeric(filtered_cities["longitude"], errors='coerce')
+
+viet_coord_data["latitude"] = pd.to_numeric(viet_coord_data["latitude"], errors='coerce')
+viet_coord_data["longitude"] = pd.to_numeric(viet_coord_data["longitude"], errors='coerce')
+filtered_cities = filtered_cities.dropna(subset=["latitude", "longitude"])
+viet_coord_data = viet_coord_data.dropna(subset=["latitude", "longitude"])
 
 def search_city(name, filtered_cities=filtered_cities, coord_data=viet_coord_data, coord_threshold=0.5):
     name = name.strip().lower()

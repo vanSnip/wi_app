@@ -91,7 +91,7 @@ def load_texts(filename):
     else:
         return "Text not available."
 
-def search_city(name, filtered_cities=filtered_cities, coord_data=viet_coord_data, coord_threshold=0.2):
+def search_city(name, filtered_cities=filtered_cities, coord_data=viet_coord_data, coord_threshold=0.5):
     name = name.strip().lower()
 
     # Step 1: Check direct match in filtered_cities
@@ -101,7 +101,7 @@ def search_city(name, filtered_cities=filtered_cities, coord_data=viet_coord_dat
         alt_names = str(row.get("alternatenames", "")).lower().split(",")
 
         if name == ascii_name or name == std_name or name in [alt.strip() for alt in alt_names]:
-            return row["name"], f"The city '{row['asciiname']}' is found in the dataset."
+            return row["name"], f"The city '{row['asciiname']}' is found in the dataset, we use this as current city."
 
     # Step 2: Find a match in full coord_data
     match_row = None
@@ -274,7 +274,7 @@ def version_1(_=None):
 #-- Set Location --
 def set_location(_=None):
     # Display header showing current location from session state
-    st.header(f"Select your location (your current location is: {st.session_state.loc})")
+    st.header(f"Select your location (your current location is: {st.session_state.loc}) If your location is not in the list we use the nearest location that is. ")
 
     with st.form(key="location_form"): # I do not prefer the form format, but for now, it is neat. 
         input_name = st.text_input("Enter city name:")

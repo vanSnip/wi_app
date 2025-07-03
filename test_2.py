@@ -255,7 +255,7 @@ def back_button():
 
 # --- Version Screens ---
 def version_1(_=None):
-    st.header(f"Select the version you want (current version: {st.session_state.version_show})")
+    st.header(f"Select the version or location you want(current version: {st.session_state.version_show} and current location: {st.session_state.loc})")
 
     def set_version(ver, ver_show):
         st.session_state.version = ver

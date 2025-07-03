@@ -157,7 +157,7 @@ def reset():
 # --- Screens ---
 def render_welcome(_=None):
     st.header("Xin Chao, what would you like to know? ")
-    version = st.session_state
+    version = st.session_state.version
     if version == "data_saving":
         st.info("The current versions is the data saving version, if you want acces to pictures, please change the setting with the button \"Version and Locations\" " )
     st.button("Weather information", on_click=partial(navigate, "weather_info"))

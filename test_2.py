@@ -11,7 +11,7 @@ user = "vanSnip"  # GitHub username
 repo = "wi_app"  # GitHub repository name
 repo_url = f"https://raw.githubusercontent.com/{user}/{repo}/main"
 
-#-- import data --
+#-- Define General functions --
 def load_list_from_github(filename):
     url = f"{repo_url}/scalability/{filename}"
     response = requests.get(url)
@@ -19,7 +19,6 @@ def load_list_from_github(filename):
         return ast.literal_eval(response.text)  # Safe parsing of list string
     else:
         return 
-
 
 def load_crop_prices():
     url = f"{repo_url}/price_data/crop_prices.csv"
@@ -51,9 +50,6 @@ def load_todays_climate_data():
     data_dict = df.set_index(df.columns[0]).apply(lambda row: row.tolist(), axis=1).to_dict()
 
     return data_dict
-    
-crops = load_list_from_github("selected_crops.txt")   
-periods = load_list_from_github("selected_periods.txt")    
 
 def load_csv(filename):
     url = f"{repo_url}/csv_files/{filename}"
@@ -61,30 +57,6 @@ def load_csv(filename):
     df = pd.read_csv(url, sep=',')
     
     return df
-
-filtered_cities = load_csv("filtered_cities.csv")
-columns = [
-    "geonameid", "name", "asciiname", "alternatenames",
-    "latitude", "longitude", "feature_class", "feature_code",
-    "country_code", "cc2", "admin1_code", "admin2_code",
-    "admin3_code", "admin4_code", "population", "elevation",
-    "dem", "timezone", "modification_date"
-]
-# Load file
-viet_coord_data = pd.read_csv("text_data/VN.txt", sep="\t", names=columns, dtype=str)
-
-filtered_cities["latitude"] = pd.to_numeric(filtered_cities["latitude"], errors='coerce')
-filtered_cities["longitude"] = pd.to_numeric(filtered_cities["longitude"], errors='coerce')
-
-viet_coord_data["latitude"] = pd.to_numeric(viet_coord_data["latitude"], errors='coerce')
-viet_coord_data["longitude"] = pd.to_numeric(viet_coord_data["longitude"], errors='coerce')
-filtered_cities = filtered_cities.dropna(subset=["latitude", "longitude"])
-viet_coord_data = viet_coord_data.dropna(subset=["latitude", "longitude"])
-
-#-- import todays climate data --
-todays_climate_data = load_todays_climate_data()
-cropPrices = load_crop_prices()
-
 #-- import text --
 def load_texts(filename):
     url = f"{repo_url}/texts/{filename}"
@@ -93,9 +65,6 @@ def load_texts(filename):
         return response.text
     else:
         return "Text not available."
-#We fetch text in dict form {crop_info_class; text} (Later stage, now separate .txt files)
-
-#-- import use function-- 
 
 def search_city(name, filtered_cities=filtered_cities, coord_data=viet_coord_data, coord_threshold=0.2):
     name = name.strip().lower()
@@ -148,6 +117,39 @@ def search_city(name, filtered_cities=filtered_cities, coord_data=viet_coord_dat
 
     return closest["name"], f"The closest city with data is '{closest['asciiname']}', which is approximately {dist_km:.2f} km from '{name}'."
 
+def get_forecast(period):
+    # Map each period to its image filename
+    filename = f"forecast_graph_for_{period}.png"
+    # Full URL from your GitHub repo (use raw.githubusercontent.com)
+    url = f"{repo_url}/graphs/{filename}"
+    return url
+
+#-- initialise data --
+filtered_cities = load_csv("filtered_cities.csv")
+columns = [
+    "geonameid", "name", "asciiname", "alternatenames",
+    "latitude", "longitude", "feature_class", "feature_code",
+    "country_code", "cc2", "admin1_code", "admin2_code",
+    "admin3_code", "admin4_code", "population", "elevation",
+    "dem", "timezone", "modification_date"
+]
+# Load file
+crops = load_list_from_github("selected_crops.txt")   
+periods = load_list_from_github("selected_periods.txt") 
+viet_coord_data = pd.read_csv("text_data/VN.txt", sep="\t", names=columns, dtype=str)
+
+filtered_cities["latitude"] = pd.to_numeric(filtered_cities["latitude"], errors='coerce')
+filtered_cities["longitude"] = pd.to_numeric(filtered_cities["longitude"], errors='coerce')
+
+viet_coord_data["latitude"] = pd.to_numeric(viet_coord_data["latitude"], errors='coerce')
+viet_coord_data["longitude"] = pd.to_numeric(viet_coord_data["longitude"], errors='coerce')
+filtered_cities = filtered_cities.dropna(subset=["latitude", "longitude"])
+viet_coord_data = viet_coord_data.dropna(subset=["latitude", "longitude"])
+
+#-- import todays climate data --
+todays_climate_data = load_todays_climate_data()
+cropPrices = load_crop_prices()
+
 # --- CSS styling ---
 st.markdown(
     """
@@ -186,15 +188,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-#--Get forecast graphs--
-def get_forecast(period):
-    # Map each period to its image filename
-    filename = f"forecast_graph_for_{period}.png"
-    # Full URL from your GitHub repo (use raw.githubusercontent.com)
-    url = f"{repo_url}/graphs/{filename}"
-    return url
-
-# --- Initialize session states ---
+# --- Initialise session states ---
 if "history" not in st.session_state:
     st.session_state.history = [("welcome", None)]
 
@@ -220,10 +214,9 @@ if "selected_period" not in st.session_state:
 if "plot_url" not in st.session_state:
     st.session_state.plot_url = None
 
-#-- define functions --
+#-- Define streamlit functions --
 def toggle_notification(key):
     st.session_state.notificationsEnabled[key] = not st.session_state.notificationsEnabled[key]
-
 
 # --- Navigation helpers ---
 def navigate(screen_name, param=None):

@@ -6,9 +6,13 @@ import pandas as pd
 import requests
 import ast
 
+user = "vanSnip"  # GitHub username
+repo = "wi_app"  # GitHub repository name
+repo_url = f"https://raw.githubusercontent.com/{user}/{repo}/main"
+
 #-- import data --
 def load_list_from_github(filename):
-    url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/scalability/{filename}"
+    url = f"{repo_url}/scalability/{filename}"
     response = requests.get(url)
     if response.status_code == 200:
         return ast.literal_eval(response.text)  # Safe parsing of list string
@@ -16,7 +20,7 @@ def load_list_from_github(filename):
         return 
 
 def load_crop_prices():
-    url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/crop_prices.csv"
+    url = f"{repo_url}/price_data/crop_prices.csv"
     df = pd.read_csv(url, sep=',')
 
     # Clean column names
@@ -31,7 +35,7 @@ def load_crop_prices():
     return dict(zip(df["crop"], df["price"]))
     
 def load_todays_climate_data():
-    url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/climate_data/weather_data_today.csv"
+    url = f"{repo_url}/climate_data/weather_data_today.csv"
 
     df = pd.read_csv(url, sep=',')
     
@@ -55,7 +59,7 @@ cropPrices = load_crop_prices()
 
 #-- import text --
 def load_texts(filename):
-    url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/texts/{filename}"
+    url = f"{repo_url}/texts/{filename}"
     response = requests.get(url)
     if response.status_code == 200:
         return response.text
@@ -106,7 +110,7 @@ def get_forecast(period):
     # Map each period to its image filename
     filename = f"forecast_graph_for_{period}.png"
     # Full URL from your GitHub repo (use raw.githubusercontent.com)
-    url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/{filename}"
+    url = f"{repo_url}/graphs/{filename}"
     return url
 
 # --- Initialize session states ---
@@ -207,7 +211,7 @@ def weather_forecast_period(_=None):
         st.session_state.selected_period = months
         city = st.session_state.loc
         filename = f"forecast_graph_{city.replace(' ', '_').lower()}_{months}_months.png"
-        github_url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/{filename}"
+        github_url = f"{repo_url}/graphs/{filename}"
 
         if requests.get(github_url).status_code == 200:
             st.session_state.plot_url = github_url
@@ -241,10 +245,10 @@ def weather_info(_=None):
 
     
     if version == "performance":
-        st.image("https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/Nahss%20log.png", use_column_width=True)
+        st.image(f"{repo_url}/graphs/Nahss%20log.png", use_column_width=True)
         st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
     elif version == "extension":
-        st.image("https://raw.githubusercontent.com/vanSnip/wi_app/main/graphs/Nahss%20log.png", use_column_width=True)
+        st.image(f"{repo_url}/graphs/Nahss%20log.png", use_column_width=True)
         st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
     else:
         st.info("Weather graphics are not available in this version to save data. Change version for the forecasts")

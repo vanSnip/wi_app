@@ -329,7 +329,7 @@ def price_info_1(_=None):
 
     for crop in crops:
         price = cropPrices.get(crop)
-        label = f"{crop} - {price:.2f}" if price is not None else f"{crop} - (no price available)"
+        label = f"{crop} - {price:.2f} usd per kg" if price is not None else f"{crop} - (no price available)"
         st.write(label)
 
 

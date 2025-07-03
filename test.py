@@ -335,17 +335,19 @@ def GAP_2(type_):
         st.text(text)
         st.button("3 principles of conservation agriculture", on_click=partial(navigate, "GAP_2", "three_principles"))
         st.button("Step by Step guide", on_click=partial(navigate, "GAP_2", "SBS_guide"))
+        back_button()
     elif type_ == "three_principles":
         st.header("Three principles of conservation agriculture")
         text= load_texts("advice_guide_3pgap.txt")
         st.text(text)
         st.button("Step by Step guide", on_click=partial(navigate, "GAP_2", "SBS_guide"))
+        st.button("Back to the alternative farming methods", on_click=partial(navigate, "GAP_1"))
     elif type_ == "SBS_guide":
         st.header("Step by Step guide to implementing Good Agricultural Practices")
         text = load_texts("advice_guide_sbs.txt")
         st.text(text)
         st.button("Three principles of conservation agriculture", on_click=partial(navigate, "GAP_2", "three_principles"))
-    back_button()
+        st.button("Back to the alternative farming methods", on_click=partial(navigate, "GAP_1"))
     
 def alt_tech(type_):
     if type_ == "aquatic":

@@ -270,17 +270,21 @@ def version_1(_=None):
     
 #-- Set Location --
 def set_location(_=None):
+    # Display header showing current location from session state
     st.header(f"Select your location (your current location is: {st.session_state.loc})")
 
-    input_name = st.text_input("Enter city name:")
+    with st.form(key="location_form"):
+        input_name = st.text_input("Enter city name:")
+        submit = st.form_submit_button("Set Location")
 
-    if st.button("Set Location"):
+    if submit:
         new_loc, message = search_city(input_name)
         if new_loc is not None:
             st.session_state.loc = new_loc
-            st.experimental_rerun()
-        st.write(message)
-
+            st.success(f"Location updated to {new_loc}")
+        else:
+            st.warning(message)
+    
     back_button()
 
 def weather_forecast_period(_=None):

@@ -185,7 +185,7 @@ def version_1(_=None):
     st.button("Performance Optimised Version", on_click=partial(set_version, "performance", "Performance Optimised Version"))
     st.button("Extension Officers Version", on_click=partial(set_version, "extension", "Extension Officers Version"))
     st.button("Choose Location", on_click=partial(navigate, "set_location"))
-    back_button()
+    st.button("Back to the main menu", on_click=partial(navigate, "welcome"))
     
 #-- Set Location --
 def set_location(_=None):
@@ -319,7 +319,7 @@ def price_info_1(_=None):
         price = cropPrices.get(crop)
         label = f"{crop} - {price:.2f} usd per kg" if price is not None else f"{crop} - (no price available)" # this can be converted to vnd
         st.write(label)
-    back_button()
+    st.button("Back to the main menu", on_click=partial(navigate, "welcome"))
 
 # --- Good Agricultural Practices Screens ---
 def GAP_1(_=None):

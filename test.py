@@ -310,20 +310,6 @@ def crop_cultivation_adv(crop):
     back_button()
 
 # --- Price Info Screens ---
-def on_crop_click(crop):
-    # Build the filename and GitHub URL for the crop plot
-    filename = f"price_plot_{crop.replace(' ', '_').lower()}.png"
-    github_url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/{filename}"
-
-    # Check if the image exists on GitHub
-    if requests.get(github_url).status_code == 200:
-        st.session_state.plot_url = github_url
-    else:
-        st.session_state.plot_url = None
-
-    st.session_state.selected_crop = crop
-    navigate("price_info_2")
-
 def price_info_1(_=None):
     st.header("Welcome to the price menu, these are the most recent prices for the crops. ")
 
@@ -331,8 +317,6 @@ def price_info_1(_=None):
         price = cropPrices.get(crop)
         label = f"{crop} - {price:.2f} usd per kg" if price is not None else f"{crop} - (no price available)" # this can be converted to vnd
         st.write(label)
-
-
     back_button()
 
 # --- Good Agricultural Practices Screens ---
@@ -423,7 +407,6 @@ screen_funcs = {
     "pnd_1": pnd_1,
     "crop_cultivation_adv": crop_cultivation_adv,
     "price_info_1": price_info_1,
-    "price_info_2": price_info_2,
     "GAP_1": GAP_1,
     "GAP_2": GAP_2,
     "alt_tech": alt_tech,

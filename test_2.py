@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import requests
 import ast
+import numpy as np
 
 #-- import data --
 def load_list_from_github(filename):
@@ -13,6 +14,7 @@ def load_list_from_github(filename):
         return ast.literal_eval(response.text)  # Safe parsing of list string
     else:
         return 
+
 
 def load_crop_prices():
     url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/price_data/crop_prices.csv"
@@ -30,7 +32,7 @@ def load_crop_prices():
     return dict(zip(df["crop"], df["price"]))
     
 def load_todays_climate_data():
-    url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/climate_data/weather_data_today.csv"
+    url = "https://raw.githubusercontent.com/vanSnip/wi_app/main/climate_data_2/weather_data_today.csv"
 
     df = pd.read_csv(url, sep=',')
     
@@ -46,8 +48,18 @@ def load_todays_climate_data():
     return data_dict
     
 crops = load_list_from_github("selected_crops.txt")   
-cities = load_list_from_github("filtered_cities.txt")
 periods = load_list_from_github("selected_periods.txt")    
+
+def load_csv(filename):
+    url = f"https://raw.githubusercontent.com/vanSnip/wi_app/main/csv_files/{filename}"
+
+    df = pd.read_csv(url, sep=',')
+    
+    return df
+
+filtered_cities = load_csv("filtered_cities.csv")
+viet_coord_data = load_csv("viet_coord_data.csv")
+
 
 todays_climate_data = load_todays_climate_data()
 cropPrices = load_crop_prices()
@@ -61,6 +73,59 @@ def load_texts(filename):
     else:
         return "Text not available."
 #We fetch text in dict form {crop_info_class; text} (Later stage, now separate .txt files)
+
+#-- import use function-- 
+
+def search_city(name, filtered_cities=filtered_cities, coord_data=viet_coord_data, coord_threshold=0.2):
+    name = name.strip().lower()
+
+    # Step 1: Check direct match in filtered_cities
+    for _, row in filtered_cities.iterrows():
+        ascii_name = str(row["asciiname"]).lower()
+        std_name = str(row["name"]).lower()
+        alt_names = str(row.get("alternatenames", "")).lower().split(",")
+
+        if name == ascii_name or name == std_name or name in [alt.strip() for alt in alt_names]:
+            return row["name"], f"The city '{row['asciiname']}' is found in the dataset."
+
+    # Step 2: Find a match in full coord_data
+    match_row = None
+    for _, row in coord_data.iterrows():
+        ascii_name = str(row["asciiname"]).lower()
+        std_name = str(row["name"]).lower()
+        alt_names = str(row.get("alternatenames", "")).lower().split(",")
+
+        if name == ascii_name or name == std_name or name in [alt.strip() for alt in alt_names]:
+            match_row = row
+            break
+
+    if match_row is None:
+        return None, f"No matches found for '{name}'."
+
+    city_lat = match_row["latitude"]
+    city_lon = match_row["longitude"]
+
+    # Step 3: Find cities within coordinate threshold
+    nearby = filtered_cities[
+        (filtered_cities["latitude"].sub(city_lat).abs() <= coord_threshold) &
+        (filtered_cities["longitude"].sub(city_lon).abs() <= coord_threshold)
+    ]
+
+    if nearby.empty:
+        return None, f"No nearby cities within {coord_threshold} degrees found near '{name}'."
+
+    # Step 4: Compute Euclidean distance
+    nearby = nearby.copy()
+    nearby["euclid_dist_deg"] = np.sqrt(
+        (nearby["latitude"] - city_lat) ** 2 +
+        (nearby["longitude"] - city_lon) ** 2
+    )
+
+    # Step 5: Select closest city
+    closest = nearby.nsmallest(1, "euclid_dist_deg").iloc[0]
+    dist_km = closest["euclid_dist_deg"] * 111  # ~111 km per degree
+
+    return closest["name"], f"The closest city with data is '{closest['asciiname']}', which is approximately {dist_km:.2f} km from '{name}'."
 
 # --- CSS styling ---
 st.markdown(
@@ -194,9 +259,14 @@ def set_location(_=None):
     def set_location_state(loc):
         st.session_state.loc = loc
         go_back()
+    input_name = st.text_input("Enter city name:")
 
-    for city in cities:
-        st.button(city, on_click=partial(set_location_state, city))
+    if st.button("Set Location"):
+        new_loc, message = search_city(input_name)
+        if new_loc is not None:
+            st.session_state.loc = new_loc
+        st.write(message)
+
     back_button()
 
 def weather_forecast_period(_=None):

@@ -1,1 +1,1 @@
-['Rice', 'Maize', 'Sugar_cane']
+['Rice', 'Maize', 'Sugarcane']

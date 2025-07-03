@@ -274,7 +274,7 @@ def version_1(_=None):
 #-- Set Location --
 def set_location(_=None):
     # Display header showing current location from session state
-    st.header(f"Select your location (your current location is: {st.session_state.loc}) If your location is not in the list we use the nearest location that is. ")
+    st.header(f"Select your location (your current location is: {st.session_state.loc}), If your location is not in the list we use the nearest location that is. ")
 
     with st.form(key="location_form"): # I do not prefer the form format, but for now, it is neat. 
         input_name = st.text_input("Enter city name:")

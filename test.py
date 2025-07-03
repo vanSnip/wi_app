@@ -335,26 +335,6 @@ def price_info_1(_=None):
 
     back_button()
 
-#begin Rm   
-def price_info_2(_=None):
-    crop = st.session_state.get("selected_crop", None)
-    if not crop:
-        st.write("No crop selected.")
-        return
-
-    st.header(f"Historical price data for {crop} for 6 months")
-    plot_url = st.session_state.get("plot_url", None)
-    version = st.session_state.version
-    if version == "data_saving":
-        st.info("Plot image is not available in the Data Saving Version. Please switch to another version to view the price trends.")
-    elif plot_url:
-        st.image(plot_url, caption=f"Price plot for {crop}", use_column_width=True)
-    else:
-        st.info("Plot image not found or is unavailable at the moment.")
-    back_button()
-# End Rm
-
-
 # --- Good Agricultural Practices Screens ---
 def GAP_1(_=None):
     st.header("What new farming technique would you like to have explained")

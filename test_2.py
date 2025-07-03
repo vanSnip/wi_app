@@ -278,6 +278,7 @@ def set_location(_=None):
         new_loc, message = search_city(input_name)
         if new_loc is not None:
             st.session_state.loc = new_loc
+            st.experimental_rerun()
         st.write(message)
 
     back_button()

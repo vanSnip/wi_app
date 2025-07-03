@@ -325,23 +325,17 @@ def on_crop_click(crop):
     navigate("price_info_2")
 
 def price_info_1(_=None):
-    st.header("What crop do you want to know the historical prices of?")
-    version = st.session_state.version
-
-    if version == "data_saving":
-        st.info("Plot images are not available in Data Saving Mode.\nSwitch to another version to view price trends.")
+    st.header("Welcome to the price menu, these are the most recent prices for the crops. ")
 
     for crop in crops:
         price = cropPrices.get(crop)
         label = f"{crop} - {price:.2f}" if price is not None else f"{crop} - (no price available)"
+        st.write(label)
 
-        if version == "data_saving":
-            st.write(label)
-        else:
-            st.button(label, on_click=partial(on_crop_click, crop))
 
     back_button()
-    
+
+#begin Rm   
 def price_info_2(_=None):
     crop = st.session_state.get("selected_crop", None)
     if not crop:
@@ -358,6 +352,8 @@ def price_info_2(_=None):
     else:
         st.info("Plot image not found or is unavailable at the moment.")
     back_button()
+# End Rm
+
 
 # --- Good Agricultural Practices Screens ---
 def GAP_1(_=None):

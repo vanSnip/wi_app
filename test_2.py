@@ -360,7 +360,7 @@ def weather_info(_=None):
         temp_class = classification['temp_classification']
 
         st.write(f"**Location:** {loc} ")
-        st.write(f"**Temperature:** {temp} °C,{temp_class} ")
+        st.write(f"**Temperature:** {temp} °C, {temp_class} ")
         st.write(f"**Precipitation:** {precip} mm, {rain_class}")
         st.write(f"**Wind Speed:** {wind_speed} m/s, {wind_class}")
 

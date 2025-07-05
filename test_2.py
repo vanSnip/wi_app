@@ -48,24 +48,6 @@ def load_crop_prices():
     except Exception as e:
         st.warning(f"Failed to load crop prices: {e}")
         return {}
-'''
-def load_todays_climate_data():
-    url = f"{repo_url}/climate_data_2/weather_data_today.csv"
-
-    df = pd.read_csv(url, sep=',')
-    
-    # Clean column names
-    df.columns = df.columns.str.strip()
-
-    # Strip whitespace in key column
-    df.iloc[:, 0] = df.iloc[:, 0].astype(str).str.strip()
-
-    # Convert to dictionary: key = first column, value = list of the rest
-    data_dict = df.set_index(df.columns[0]).apply(lambda row: row.tolist(), axis=1).to_dict()
-
-    return data_dict
-
-'''
 
 import ast
 
@@ -367,11 +349,16 @@ def weather_info(_=None):
         precip = climate_values['precipitation']
         wind_speed = climate_values['wind_speed']
 
-        st.write(f"**Location:** {loc}")
-        st.write(f"**Temperature:** {temp} °C")
-        st.write(f"**Precipitation:** {precip} mm")
-        st.write(f"**Wind Speed:** {wind_speed} m/s")
-        st.write(f"**Classification:** {classification}")
+        # Classify the weather conditions
+        wind_class = classification['wind_classification']
+        rain_class = classification['rain_classification']      
+        temp_class = classification['temperature_classification']
+
+        st.write(f"**Location:** {loc} ")
+        st.write(f"**Temperature:** {temp} °C,{temp_class} ")
+        st.write(f"**Precipitation:** {precip} mm, {rain_class}")
+        st.write(f"**Wind Speed:** {wind_speed} m/s, {wind_class}")
+
 
     else:
         st.warning(f"No weather data found for **{loc}**.")

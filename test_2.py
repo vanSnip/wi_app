@@ -349,10 +349,15 @@ def weather_info(_=None):
         precip = climate_values['precipitation']
         wind_speed = climate_values['wind_speed']
 
+        #Set the session states
+        st.session_state.rain_class = classification['precip_classification']
+        st.session_state.temp_class = classification['temp_classification']
+        st.session_state.wind_class = classification['wind_classification']
+
         # Classify the weather conditions
         wind_class = classification['wind_classification']
-        rain_class = classification['rain_classification']      
-        temp_class = classification['temperature_classification']
+        rain_class = classification['precip_classification']      
+        temp_class = classification['temp_classification']
 
         st.write(f"**Location:** {loc} ")
         st.write(f"**Temperature:** {temp} °C,{temp_class} ")

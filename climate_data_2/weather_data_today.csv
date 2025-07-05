@@ -44,3 +44,4 @@ Nông Trường Buôn Kít,"{'temperature': 19.66, 'precipitation': 0, 'wind_spe
 Nông Trường Tô Hiệu,"{'temperature': 19.64, 'precipitation': 0.32, 'wind_speed': 0.5}","{'temp_classification': 'about average', 'precip_classification': 'above average', 'wind_classification': 'below average'}"
 Nông Trường Ê Chư Káp,"{'temperature': 21.56, 'precipitation': 0, 'wind_speed': 1.67}","{'temp_classification': 'about average', 'precip_classification': 'below average', 'wind_classification': 'about average'}"
 Xứ sở Quýt Hồng Lai Vung,"{'temperature': 24.99, 'precipitation': 0, 'wind_speed': 3.73}","{'temp_classification': 'about average', 'precip_classification': 'undefined', 'wind_classification': 'about average'}"
+Ho Chi Minh City,"{'temperature': 27.26, 'precipitation': 0, 'wind_speed': 5.14}","{'temp_classification': 'about average', 'precip_classification': 'below average', 'wind_classification': 'about average'}"

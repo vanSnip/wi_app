@@ -322,25 +322,37 @@ def weather_info(_=None):
 
     loc = st.session_state.loc
     if loc in todays_climate_data:
-        climate_values, classification = todays_climate_data[loc]
+        entry = todays_climate_data[loc]
 
-        # Access values from the dict
-        temp = climate_values['temperature']
-        precip = climate_values['precipitation']
-        wind_speed = climate_values['wind_speed']
+        # Case 1: Entry has both climate data and classification
+        if isinstance(entry, tuple) and len(entry) == 2:
+            climate_values, classification = entry
 
-        temp_class, precip_class, wind_class = classification
+            temp = climate_values['temperature']
+            precip = climate_values['precipitation']
+            wind_speed = climate_values['wind_speed']
 
-        # Store classifications in session state
-        st.session_state.temp_class = temp_class
-        st.session_state.rain_class = precip_class
-        st.session_state.wind_class = wind_class
+            temp_class = classification.get('temp_classification', 'N/A')
+            precip_class = classification.get('precip_classification', 'N/A')
+            wind_class = classification.get('wind_classification', 'N/A')
 
-        # Display weather info
+            st.session_state.temp_class = temp_class
+            st.session_state.rain_class = precip_class
+            st.session_state.wind_class = wind_class
+
+        else:
+            st.error(f"Unexpected data format for {loc}: {entry}")
+            return
+
+        # Display results
         st.write(f"**Location:** {loc}")
         st.write(f"**Temperature:** {temp} °C")
         st.write(f"**Precipitation:** {precip} mm")
         st.write(f"**Wind Speed:** {wind_speed} m/s")
+        st.write(f"**Classification:**")
+        st.write(f"- Temperature: {st.session_state.temp_class}")
+        st.write(f"- Precipitation: {st.session_state.rain_class}")
+        st.write(f"- Wind: {st.session_state.wind_class}")
 
     else:
         st.warning(f"No weather data found for **{loc}**.")

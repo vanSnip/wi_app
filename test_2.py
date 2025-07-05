@@ -48,7 +48,7 @@ def load_crop_prices():
     except Exception as e:
         st.warning(f"Failed to load crop prices: {e}")
         return {}
-
+'''
 def load_todays_climate_data():
     url = f"{repo_url}/climate_data_2/weather_data_today.csv"
 
@@ -65,6 +65,44 @@ def load_todays_climate_data():
 
     return data_dict
 
+'''
+
+import ast
+
+def load_todays_climate_data():
+    url = f"{repo_url}/climate_data_2/weather_data_today.csv"
+
+    df = pd.read_csv(url, sep=',')
+
+    # Clean column names
+    df.columns = df.columns.str.strip()
+    df.iloc[:, 0] = df.iloc[:, 0].astype(str).str.strip()
+
+    def safe_parse(value):
+        try:
+            return ast.literal_eval(value)
+        except (ValueError, SyntaxError):
+            return None
+
+    # Parse both columns (assuming climate_data and classification)
+    df[df.columns[1]] = df[df.columns[1]].apply(safe_parse)
+    if len(df.columns) > 2:
+        df[df.columns[2]] = df[df.columns[2]].apply(safe_parse)
+
+    # Convert to usable dict format
+    data_dict = {}
+
+    for _, row in df.iterrows():
+        loc = row[0]
+        climate = row[1]
+        classification = row[2] if len(row) > 2 else None
+
+        if classification is None or pd.isna(classification):
+            data_dict[loc] = climate
+        else:
+            data_dict[loc] = (climate, classification)
+
+    return data_dict
 
 #-- import text --
 def load_texts(filename):
@@ -323,7 +361,12 @@ def weather_info(_=None):
     loc = st.session_state.loc
     if loc in todays_climate_data:
         climate_values, classification = todays_climate_data[loc]
-        temp, precip, wind_speed = climate_values
+
+        # Access the data correctly
+        temp = climate_values['temperature']
+        precip = climate_values['precipitation']
+        wind_speed = climate_values['wind_speed']
+
         st.write(f"**Location:** {loc}")
         st.write(f"**Temperature:** {temp} °C")
         st.write(f"**Precipitation:** {precip} mm")

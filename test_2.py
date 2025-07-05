@@ -235,6 +235,9 @@ def reset():
     st.session_state.version = "data_saving"
     st.session_state.version_show = "Data Saving Version"
     st.session_state.loc = "Ho Chi Minh City"
+    st.session_state.rain_class = "about average"
+    st.session_state.temp_class = "about average"
+    st.session_state.wind_class = "about average"
 
 # --- Screens ---
 def render_welcome(_=None):
@@ -319,10 +322,26 @@ def weather_info(_=None):
 
     loc = st.session_state.loc
     if loc in todays_climate_data:
-        temp, precip = todays_climate_data[loc]
+        climate_values, classification = todays_climate_data[loc]
+
+        # Access values from the dict
+        temp = climate_values['temperature']
+        precip = climate_values['precipitation']
+        wind_speed = climate_values['wind_speed']
+
+        temp_class, precip_class, wind_class = classification
+
+        # Store classifications in session state
+        st.session_state.temp_class = temp_class
+        st.session_state.rain_class = precip_class
+        st.session_state.wind_class = wind_class
+
+        # Display weather info
         st.write(f"**Location:** {loc}")
         st.write(f"**Temperature:** {temp} °C")
         st.write(f"**Precipitation:** {precip} mm")
+        st.write(f"**Wind Speed:** {wind_speed} m/s")
+
     else:
         st.warning(f"No weather data found for **{loc}**.")
     version = st.session_state.version
@@ -356,6 +375,31 @@ def weather_crop_advice_1(_=None):
 
 def weather_crop_advice_3(crop):
     st.header(f"Weather advice for {crop}")
+
+    #gen rain advice
+    if st.session_state.rain_class == "about average":
+        st.write("The rainfall is about average, you can follow the normal cultivation practices.")
+    elif st.session_state.rain_class == "below average":
+        st.write("The rainfall is below average, consider irrigation or water conservation techniques.")
+    elif st.session_state.rain_class == "above average":
+        st.write("The rainfall is above average, ensure proper drainage to avoid waterlogging.")
+
+    #gen temp advice
+    if st.session_state.temp_class == "about average":
+        st.write("The temperature is about average, normal cultivation practices apply.")
+    elif st.session_state.temp_class == "below average":
+        st.write("The temperature is below average, consider using frost protection methods.")
+    elif st.session_state.temp_class == "above average":
+        st.write("The temperature is above average, ensure proper cooling and shade for crops.")
+
+    #gen wind advice
+    if st.session_state.wind_class == "about average":
+        st.write("The wind speed is about average, normal cultivation practices apply.")
+    elif st.session_state.wind_class == "below average":
+        st.write("The wind speed is below average, consider using windbreaks if necessary.")
+    elif st.session_state.wind_class == "above average":
+        st.write("The wind speed is above average, ensure that crops are securely anchored to prevent damage.")
+    st.write("For more specific advice, please consult local agricultural experts.")
     st.write("Insert crop-specific weather advice here...")
     back_button()
 

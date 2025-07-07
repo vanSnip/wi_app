@@ -370,38 +370,6 @@ def weather_info(_=None):
         st.warning(f"No weather data found for **{loc}**.")
     version = st.session_state.version
 
-    
-    if version == "performance":
-        st.image(f"{repo_url}/graphs/Nahss%20log.png", use_column_width=True)
-        st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
-    elif version == "extension":
-        st.image(f"{repo_url}/graphs/Nahss%20log.png", use_column_width=True)
-        st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
-    else:
-        st.info("Weather graphics are not available in this version to save data. Change version for the forecasts")
-        
-    
-    st.button("Get weather advice for crops", on_click=partial(navigate, "weather_crop_advice_1"))
-    back_button()
-
-def weather_forecasts_2(period):
-    st.header(f"Forecast for {period}")
-    graph_url = get_forecast(period)
-    st.image(graph_url, caption=f"Forecast for {period}", use_column_width=True)
-    back_button()
-
-def weather_crop_advice_1(_=None):
-    st.header("For what crop do you need weather advice?")
-    for crop in crops:
-        crop_key = crop.lower().replace(" ", "_")
-        st.button(crop, on_click=partial(navigate, "weather_crop_advice_3", crop_key))
-    back_button()
-
-def weather_crop_advice_3(crop):
-    st.header(f"Weather advice for {crop}")
-
-    #gen rain advice
-
     def load_advice(category, classification):
         mapping = {
             "below average": "0",
@@ -410,6 +378,7 @@ def weather_crop_advice_3(crop):
         }
         level = mapping.get(classification, "1")
         file_path = f"advice_weather_{category}{level}.txt"
+        print(file_path)
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 return f.read()
@@ -428,9 +397,25 @@ def weather_crop_advice_3(crop):
     wind_advice = load_advice("wind", st.session_state.wind_class)
     st.write(wind_advice)
 
-    st.write("For more specific advice, please consult local agricultural experts.")
-    st.write("For more specific advice, please consult local agricultural experts.")
+    st.write("For more specific advice, please consult local agricultural experts.")    
     
+    if version == "performance":
+        st.image(f"{repo_url}/graphs/Nahss%20log.png", use_column_width=True)
+        st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
+    elif version == "extension":
+        st.image(f"{repo_url}/graphs/Nahss%20log.png", use_column_width=True)
+        st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
+    else:
+        st.info("Weather graphics are not available in this version to save data. Change version for the forecasts")
+        
+    
+    st.button("Get weather advice for crops", on_click=partial(navigate, "weather_crop_advice_1"))
+    back_button()
+
+def weather_forecasts_2(period):
+    st.header(f"Forecast for {period}")
+    graph_url = get_forecast(period)
+    st.image(graph_url, caption=f"Forecast for {period}", use_column_width=True)
     back_button()
 
 # --- Crop Advice Screens ---
@@ -571,8 +556,8 @@ screen_funcs = {
     "weather_info": weather_info,
     #"weather_forecasts_1": weather_forecasts_1,
     "weather_forecasts_2": weather_forecasts_2,
-    "weather_crop_advice_1": weather_crop_advice_1,
-    "weather_crop_advice_3": weather_crop_advice_3,
+    #"weather_crop_advice_1": weather_crop_advice_1,
+    #"weather_crop_advice_3": weather_crop_advice_3,
     "crop_advice_1": crop_advice_1,
     "crop_advice_2": crop_advice_2,
     "pnd_1": pnd_1,

@@ -405,7 +405,7 @@ def weather_info(_=None):
         st.info("Weather graphics are not available in this version to save data. Change version for the forecasts")
         
     
-    st.button("Get weather advice for crops", on_click=partial(navigate, "weather_crop_advice_1"))
+    #st.button("Get weather advice for crops", on_click=partial(navigate, "weather_crop_advice_1"))
     back_button()
 
 def weather_forecasts_2(period):

@@ -377,7 +377,7 @@ def weather_info(_=None):
             "above average": "2"
         }
         level = mapping.get(classification, "1")
-        file_path = f"advice_weather_{category}{level}.txt"
+        file_path = f"texts/advice_weather_{category}{level}.txt"
         print(file_path)
         try:
             with open(file_path, "r", encoding="utf-8") as f:

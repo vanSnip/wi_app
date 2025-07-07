@@ -4,6 +4,7 @@ import pandas as pd
 import requests
 import ast
 import numpy as np
+import os
 
 user = "vanSnip"  # GitHub username
 repo = "wi_app"  # GitHub repository name
@@ -400,30 +401,36 @@ def weather_crop_advice_3(crop):
     st.header(f"Weather advice for {crop}")
 
     #gen rain advice
-    if st.session_state.rain_class == "about average":
-        st.write("The rainfall is about average, you can follow the normal cultivation practices.")
-    elif st.session_state.rain_class == "below average":
-        st.write("The rainfall is below average, consider irrigation or water conservation techniques.")
-    elif st.session_state.rain_class == "above average":
-        st.write("The rainfall is above average, ensure proper drainage to avoid waterlogging.")
 
-    #gen temp advice
-    if st.session_state.temp_class == "about average":
-        st.write("The temperature is about average, normal cultivation practices apply.")
-    elif st.session_state.temp_class == "below average":
-        st.write("The temperature is below average, consider using frost protection methods.")
-    elif st.session_state.temp_class == "above average":
-        st.write("The temperature is above average, ensure proper cooling and shade for crops.")
+    def load_advice(category, classification):
+        mapping = {
+            "below average": "0",
+            "about average": "1",
+            "above average": "2"
+        }
+        level = mapping.get(classification, "1")
+        file_path = f"advice_weather_{category}{level}.txt"
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                return f.read()
+        except FileNotFoundError:
+            return "No advice available for this condition."
 
-    #gen wind advice
-    if st.session_state.wind_class == "about average":
-        st.write("The wind speed is about average, normal cultivation practices apply.")
-    elif st.session_state.wind_class == "below average":
-        st.write("The wind speed is below average, consider using windbreaks if necessary.")
-    elif st.session_state.wind_class == "above average":
-        st.write("The wind speed is above average, ensure that crops are securely anchored to prevent damage.")
+    # Rainfall advice
+    rain_advice = load_advice("rain", st.session_state.rain_class)
+    st.write(rain_advice)
+
+    # Temperature advice
+    temp_advice = load_advice("temp", st.session_state.temp_class)
+    st.write(temp_advice)
+
+    # Wind advice
+    wind_advice = load_advice("wind", st.session_state.wind_class)
+    st.write(wind_advice)
+
     st.write("For more specific advice, please consult local agricultural experts.")
-    st.write("Insert crop-specific weather advice here...")
+    st.write("For more specific advice, please consult local agricultural experts.")
+    
     back_button()
 
 # --- Crop Advice Screens ---

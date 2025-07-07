@@ -345,6 +345,21 @@ def weather_info(_=None):
     if loc in todays_climate_data:
         climate_values, classification = todays_climate_data[loc]
 
+        def load_advice(category, classification):
+            mapping = {
+                "below average": "0",
+                "about average": "1",
+                "above average": "2"
+            }
+            level = mapping.get(classification, "1")
+            file_path = f"texts/advice_weather_{category}{level}.txt"
+            print(file_path)
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    return f.read()
+            except FileNotFoundError:
+                return "No advice available for this condition."
+
         # Access the data correctly
         temp = climate_values['temperature']
         precip = climate_values['precipitation']
@@ -356,46 +371,27 @@ def weather_info(_=None):
         st.session_state.wind_class = classification['wind_classification']
 
         # Classify the weather conditions
-        wind_class = classification['wind_classification']
-        rain_class = classification['precip_classification']      
-        temp_class = classification['temp_classification']
+        #wind_class = classification['wind_classification']
+        #rain_class = classification['precip_classification']      
+        #temp_class = classification['temp_classification']
 
         st.write(f"**Location:** {loc} ")
-        st.write(f"**Temperature:** {temp} °C, {temp_class} ")
-        st.write(f"**Precipitation:** {precip} mm, {rain_class}")
-        st.write(f"**Wind Speed:** {wind_speed} m/s, {wind_class}")
+        st.write(f"**Temperature:** {temp} °C.")
+        temp_advice = load_advice("temp", st.session_state.temp_class)
+        st.write(temp_advice)
+
+        st.write(f"**Precipitation:** {precip} mm.")
+        rain_advice = load_advice("rain", st.session_state.rain_class)
+        st.write(rain_advice)
+
+        st.write(f"**Wind Speed:** {wind_speed} m/s.")
+        wind_advice = load_advice("wind", st.session_state.wind_class)
+        st.write(wind_advice)
 
 
     else:
         st.warning(f"No weather data found for **{loc}**.")
     version = st.session_state.version
-
-    def load_advice(category, classification):
-        mapping = {
-            "below average": "0",
-            "about average": "1",
-            "above average": "2"
-        }
-        level = mapping.get(classification, "1")
-        file_path = f"texts/advice_weather_{category}{level}.txt"
-        print(file_path)
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                return f.read()
-        except FileNotFoundError:
-            return "No advice available for this condition."
-
-    # Rainfall advice
-    rain_advice = load_advice("rain", st.session_state.rain_class)
-    st.write(rain_advice)
-
-    # Temperature advice
-    temp_advice = load_advice("temp", st.session_state.temp_class)
-    st.write(temp_advice)
-
-    # Wind advice
-    wind_advice = load_advice("wind", st.session_state.wind_class)
-    st.write(wind_advice)
 
     st.write("For more specific advice, please consult local agricultural experts.")    
     

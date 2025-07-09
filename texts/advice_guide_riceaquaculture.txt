@@ -1,15 +1,15 @@
 Welcome to the information page of rice–aquaculture systems: 
 
-Rice–aquaculture systems are farming methods that combine rice growing with raising aquatic animals like shrimp or fish. These systems help farmers adapt to climate change, improve soil health, and increase income. 
+Rice aquaculture systems are farming methods that combine rice growing with raising aquatic animals like shrimp or fish. These systems help farmers adapt to climate change, improve soil health, and increase income. 
 
 This method is especially useful as the climate becomes more unpredictable, with: 
 1. Salty water during dry seasons 
 2. Unpredictable rainfall 
 3. Flooding and drought 
 
-There are two main types of rice–aquaculture systems used in Vietnam: 
+There are two main types of rice aquaculture systems used in Vietnam: 
 
-1. Rice–Shrimp Rotation: 
+1. Rice-Shrimp Rotation: 
 - Suitable for areas with seasonal salinity (saltwater). 
 - Shrimp are raised in the dry season when water is salty. 
 - In the rainy season, rainwater cleans the soil and prepares it for rice. 
@@ -23,8 +23,8 @@ There are two main types of rice–aquaculture systems used in Vietnam:
 - Supports household food security. 
 - Must be managed carefully to avoid environmental problems. 
 
-The Vietnamese government (MARD) is helping farmers with policies to support integrated farming. 
-- Farmers are encouraged to convert low-yield rice fields into rice–aquaculture areas. 
+The Vietnamese government is helping farmers with policies to support integrated farming. 
+- Farmers are encouraged to convert low-yield rice fields into rice aquaculture areas. 
 - These systems improve profitability and climate resilience. 
 
 Below is a simple guide for rice–fish cultivation: 

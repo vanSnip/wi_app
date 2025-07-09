@@ -1,6 +1,6 @@
 Welcome to the information page of conservation agriculture: 
 
-Conservation agriculture is a farming system that aims to improve soil health and productivity while reducing environmental impact. It is important as the current climate is changing rapidly. 
+Conservation agriculture is a farming technique that aims to improve soil health and productivity while reducing environmental impact. This is important as the current climate is changing rapidly. 
  Conservation agriculture helps adapting to unpredicatble climate and unpredictable rainfall, it provides more food security. 
 
 
@@ -12,7 +12,7 @@ Conservation agriculture is a farming system that aims to improve soil health an
 
 Besides conservation agriculture, there are other methods to adapt to climate change, such as water tanks to always have water available, irrigation systems to efficiently water the crops, and crop diversification. 
 
-The three main principles of conservation agriculture are shown below. Click the button for more information.  
+The three main principles of conservation agriculture are shown below. Click the buttons for more information about the specific iinformation.  
 1. Minimal soil disturbance 
 2. Permanent soil cover with organic matters 
 3. Crop rotation and intercropping 

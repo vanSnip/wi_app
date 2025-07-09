@@ -395,23 +395,33 @@ def weather_info(_=None):
 
     st.write("For more specific advice, please consult local agricultural experts.")    
     
+
     if version == "performance":
+        st.write("The current weather is:")
+        st.warning("This image is not yet available, the placeholder is not final")
         st.image(f"{repo_url}/graphs/Nahss%20log.png", use_column_width=True)
         st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
     elif version == "extension":
+        st.write("The current weather is:")
+        st.warning("This image is not yet available, the placeholder is not final")
         st.image(f"{repo_url}/graphs/Nahss%20log.png", use_column_width=True)
         st.button("Go to forecasts", on_click=partial(navigate, "weather_forecast_period"))
     else:
         st.info("Weather graphics are not available in this version to save data. Change version for the forecasts")
-        
+   
     
     #st.button("Get weather advice for crops", on_click=partial(navigate, "weather_crop_advice_1"))
     back_button()
 
 def weather_forecasts_2(period):
-    st.header(f"Forecast for {period}")
-    graph_url = get_forecast(period)
-    st.image(graph_url, caption=f"Forecast for {period}", use_column_width=True) #upload the pngs examples
+    st.header(f"The forecast for the next {period} weeks") #now weeks
+    st.warning("Experimental State, we show the concept image.")
+    st.image(f"{repo_url}/graphs/weather_forecast_example.png", use_column_width=True)
+
+    #st.header(f"Forecast for {period}")
+    #graph_url = get_forecast(period)
+    #st.image(graph_url, caption=f"Forecast for {period}", use_column_width=True) 
+    
     back_button()
 
 # --- Crop Advice Screens ---

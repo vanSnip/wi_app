@@ -411,7 +411,7 @@ def weather_info(_=None):
 def weather_forecasts_2(period):
     st.header(f"Forecast for {period}")
     graph_url = get_forecast(period)
-    st.image(graph_url, caption=f"Forecast for {period}", use_column_width=True)
+    st.image(graph_url, caption=f"Forecast for {period}", use_column_width=True) #upload the pngs examples
     back_button()
 
 # --- Crop Advice Screens ---

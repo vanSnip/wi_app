@@ -1,10 +1,14 @@
+# the front end interaction
 import streamlit as st
 from functools import partial
-import pandas as pd
+
+#interaction with the internet
 import requests
 import ast
+
+#the data manipulation
+import pandas as pd
 import numpy as np
-import os
 
 user = "vanSnip"  # GitHub username
 repo = "wi_app"  # GitHub repository name

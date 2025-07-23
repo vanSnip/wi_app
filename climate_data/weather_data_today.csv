@@ -1,5 +1,5 @@
-city,temperature,precipitation
-Hanoi,26.51,0
-Western Region,25.99,0
-Ho Chi Minh City,25.6,0
-Red River Delta,26.46,0
+city,today_values,classifications
+Hanoi,"{'temperature': 29.01, 'precipitation': 25.88, 'wind_speed': 3.04}","{'temp_classification': 'about average', 'precip_classification': 'above average', 'wind_classification': 'above average'}"
+Western Region,"{'temperature': 24.99, 'precipitation': 0.24, 'wind_speed': 0.51}","{'temp_classification': 'about average', 'precip_classification': 'about average', 'wind_classification': 'below average'}"
+Ho Chi Minh City,"{'temperature': 25.04, 'precipitation': 0, 'wind_speed': 3.09}","{'temp_classification': 'about average', 'precip_classification': 'below average', 'wind_classification': 'about average'}"
+Red River Delta,"{'temperature': 28.96, 'precipitation': 26.61, 'wind_speed': 3.82}","{'temp_classification': 'about average', 'precip_classification': 'above average', 'wind_classification': 'above average'}"

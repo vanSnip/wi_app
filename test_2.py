@@ -114,7 +114,7 @@ viet_coord_data["longitude"] = pd.to_numeric(viet_coord_data["longitude"], error
 filtered_cities = filtered_cities.dropna(subset=["latitude", "longitude"])
 viet_coord_data = viet_coord_data.dropna(subset=["latitude", "longitude"])
 
-def search_city(name, filtered_cities=filtered_cities, coord_data=viet_coord_data, coord_threshold=0.5):
+def search_city(name, filtered_cities=filtered_cities, coord_data=viet_coord_data, coord_threshold=0.7):
     name = name.strip().lower()
 
     # Step 1: Check direct match in filtered_cities

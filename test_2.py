@@ -272,10 +272,11 @@ def render_welcome(_=None):
         st.info("The current versions is the data saving version, if you want acces to pictures, please change the setting with the button \"Version and Locations\" " )
     st.button("Weather information", on_click=partial(navigate, "weather_info"))
     st.button("Crop Advice", on_click=partial(navigate, "crop_advice_1"))
+    st.button("Version and Locations", on_click=partial(navigate, "version_1"))
     st.button("Crop Prices", on_click=partial(navigate, "price_info_1"))
     st.button("Alternative Farming Techniques", on_click=partial(navigate, "GAP_1"))
     st.button("Notifications", on_click=partial(navigate, "notifications_1"))
-    st.button("Version and Locations", on_click=partial(navigate, "version_1"))
+
     # No back button on welcome screen
 
 def back_button():

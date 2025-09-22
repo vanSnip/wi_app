@@ -13,62 +13,38 @@ import numpy as np
 # --- CSS styling ---
 st.markdown("""
 <style>
-/* styling voor full width en look */
-div[data-testid="stButton"] > button,
-div[class*="stButton"] > button {
-    box-sizing: border-box !important;
-    padding: 0.75em 1.2em !important;
-    font-size: 1rem !important;
-    border-radius: 6px !important;
-    margin: 0.25em 0 !important;
-    border: none !important;
-    background-color: #007bff !important;
-    color: white !important;
-    cursor: pointer !important;
-}
-div[data-testid="stButton"] > button:hover,
-div[class*="stButton"] > button:hover {
-    background-color: #0056b3 !important;
+/* Make all Streamlit buttons span full width automatically */
+div[data-testid="stButton"] > button {
+    display: block;
+    width: 100% !important;
+    box-sizing: border-box;
+    padding: 0.75em 1.2em;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+    margin-bottom: 0.5em;
+    cursor: pointer;
 }
 
-/* speciale styling via key (back_button) */
-div[data-testid="stButton"][id="back_button"] > button,
-div[class*="stButton"][id="back_button"] > button {
-    background-color: #ff8800 !important;
+/* Hover effect */
+div[data-testid="stButton"] > button:hover {
+    background-color: #0056b3;
 }
-div[data-testid="stButton"][id="back_button"] > button:hover,
-div[class*="stButton"][id="back_button"] > button:hover {
+
+/* Special styling for back button */
+div[data-testid="stButton"][id="back_button"] > button {
+    background-color: #ff8800 !important;
+    color: white !important;
+}
+
+div[data-testid="stButton"][id="back_button"] > button:hover {
     background-color: #cc6f00 !important;
 }
 </style>
 """, unsafe_allow_html=True)
-
-# JS: forceer width=100% op alle buttons en blijf observaten voor nieuw toegevoegde knoppen
-components.html("""
-<script>
-(function() {
-  function applyFullWidth() {
-    const selectors = [
-      'div[data-testid="stButton"] > button',
-      'div[class*="stButton"] > button',
-      'div[data-testid^="stButton"] button',
-      'section button'
-    ];
-    selectors.forEach(sel => {
-      document.querySelectorAll(sel).forEach(b => {
-        b.style.width = '100%';
-        b.style.display = 'block';
-      });
-    });
-  }
-  // initial apply
-  setTimeout(applyFullWidth, 100); 
-  // observe mutations (new buttons)
-  const mo = new MutationObserver(applyFullWidth);
-  mo.observe(document.documentElement, { childList: true, subtree: true });
-})();
-</script>
-""", height=0)
 
 user = "vanSnip"  # GitHub username
 repo = "wi_app"  # GitHub repository name

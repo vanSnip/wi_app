@@ -10,6 +10,42 @@ import ast
 import pandas as pd
 import numpy as np
 
+# --- CSS styling ---
+st.markdown("""
+<style>
+/* Make all Streamlit buttons span full width automatically */
+div[data-testid="stButton"] > button {
+    display: block;
+    width: 100% !important;
+    box-sizing: border-box;
+    padding: 0.75em 1.2em;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+    margin-bottom: 0.5em;
+    cursor: pointer;
+}
+
+/* Hover effect */
+div[data-testid="stButton"] > button:hover {
+    background-color: #0056b3;
+}
+
+/* Special styling for back button */
+div[data-testid="stButton"][id="back_button"] > button {
+    background-color: #ff8800 !important;
+    color: white !important;
+}
+
+div[data-testid="stButton"][id="back_button"] > button:hover {
+    background-color: #cc6f00 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 user = "vanSnip"  # GitHub username
 repo = "wi_app"  # GitHub repository name
 repo_url = f"https://raw.githubusercontent.com/{user}/{repo}/main"
@@ -177,43 +213,6 @@ def get_forecast(period):
 #-- import todays climate data --
 todays_climate_data = load_todays_climate_data()
 cropPrices = load_crop_prices()
-
-# --- CSS styling ---
-st.markdown(
-    """
-    <style>
-      /* Make ALL buttons span the full width */
-      div[data-testid="stButton"] > button {
-        display: block;
-        width: 100% !important;
-        box-sizing: border-box;
-        padding: 0.75em 1.2em;
-        border-radius: 5px;
-        font-size: 1em;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        transition: background-color 0.3s ease;
-        margin-bottom: 0.5em;
-      }
-      
-      div[data-testid="stButton"] > button:hover {
-        background-color: #0056b3;
-      }
-
-      /* Special styling for back button */
-      div[data-testid="stButton"][id="back_button"] > button {
-        background-color: #ff8800 !important;
-        color: white !important;
-      }
-
-      div[data-testid="stButton"][id="back_button"] > button:hover {
-        background-color: #cc6f00 !important;
-      }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
 
 # --- Initialise session states ---
 if "history" not in st.session_state:

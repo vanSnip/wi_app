@@ -182,32 +182,31 @@ cropPrices = load_crop_prices()
 st.markdown(
     """
     <style>
-      /* Default buttons */
+      /* Make ALL buttons span the full width */
       div[data-testid="stButton"] > button {
+        display: block;
+        width: 100% !important;
+        box-sizing: border-box;
+        padding: 0.75em 1.2em;
+        border-radius: 5px;
+        font-size: 1em;
         background-color: #007bff;
         color: white;
-        border-radius: 5px;
-        padding: 0.5em 1.2em;
-        font-size: 1em;
-        margin: 0.5em 0;
-        width: 100% !important;
-        display: block;
-        box-sizing: border-box;
+        border: none;
         transition: background-color 0.3s ease;
+        margin-bottom: 0.5em;
       }
+      
       div[data-testid="stButton"] > button:hover {
         background-color: #0056b3;
       }
 
-      /* Back button */
+      /* Special styling for back button */
       div[data-testid="stButton"][id="back_button"] > button {
         background-color: #ff8800 !important;
         color: white !important;
-        border-radius: 5px !important;
-        width: 100% !important;
-        margin-top: 1em !important;
-        box-sizing: border-box;
       }
+
       div[data-testid="stButton"][id="back_button"] > button:hover {
         background-color: #cc6f00 !important;
       }

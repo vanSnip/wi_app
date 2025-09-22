@@ -1,5 +1,5 @@
 city,today_values,classifications
-Hanoi,"{'temperature': 29.01, 'precipitation': 1.26, 'wind_speed': 9.1}","{'temp_classification': 'about average', 'precip_classification': 'about average', 'wind_classification': 'above average'}"
-Western Region,"{'temperature': 25.99, 'precipitation': 0, 'wind_speed': 2.06}","{'temp_classification': 'about average', 'precip_classification': 'below average', 'wind_classification': 'about average'}"
-Ho Chi Minh City,"{'temperature': 25.6, 'precipitation': 0, 'wind_speed': 2.57}","{'temp_classification': 'about average', 'precip_classification': 'below average', 'wind_classification': 'below average'}"
-Red River Delta,"{'temperature': 28.96, 'precipitation': 0.73, 'wind_speed': 8.24}","{'temp_classification': 'about average', 'precip_classification': 'below average', 'wind_classification': 'above average'}"
+Hanoi,"{'temperature': 29.01, 'precipitation': 0, 'wind_speed': 2.49}","{'temp_classification': 'about average', 'precip_classification': 'below average', 'wind_classification': 'about average'}"
+Western Region,"{'temperature': 24.99, 'precipitation': 0, 'wind_speed': 0.51}","{'temp_classification': 'about average', 'precip_classification': 'below average', 'wind_classification': 'below average'}"
+Ho Chi Minh City,"{'temperature': 27.26, 'precipitation': 0, 'wind_speed': 2.57}","{'temp_classification': 'about average', 'precip_classification': 'below average', 'wind_classification': 'about average'}"
+Red River Delta,"{'temperature': 28.96, 'precipitation': 0, 'wind_speed': 2.62}","{'temp_classification': 'about average', 'precip_classification': 'below average', 'wind_classification': 'about average'}"

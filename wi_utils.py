@@ -36,8 +36,8 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 weather_api_key = os.getenv("weather_API_KEY")
 fx_API_KEY = os.getenv("fx_API_KEY")
 
-user = "vanSnip"  # GitHub username
-repo = "wi_app"  # GitHub repository name
+user = "Name"  # GitHub username
+repo = "Repo_name"  # GitHub repository name
 repo_url = f"https://raw.githubusercontent.com/{user}/{repo}/main"
 
 '''

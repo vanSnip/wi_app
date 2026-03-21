@@ -6,8 +6,8 @@ import pandas as pd
 import requests
 import ast
 
-user = "vanSnip"  # GitHub username
-repo = "wi_app"  # GitHub repository name
+user = "Name"  # GitHub username
+repo = "Repo_Name"  # GitHub repository name
 repo_url = f"https://raw.githubusercontent.com/{user}/{repo}/main"
 
 #-- import data --

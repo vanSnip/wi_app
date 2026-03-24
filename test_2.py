@@ -46,8 +46,8 @@ div[data-testid="stButton"][id="back_button"] > button:hover {
 </style>
 """, unsafe_allow_html=True)
 
-user = "Name"  # GitHub username
-repo = "Repo_name"  # GitHub repository name
+user = "vanSnip"  # GitHub username
+repo = "wi_app"  # GitHub repository name
 repo_url = f"https://raw.githubusercontent.com/{user}/{repo}/main"
 
 #-- deifne auxiliary functions --
